@@ -1,0 +1,19 @@
+{
+  "name": "Serenita CM",
+  "short_name": "Serenita",
+  "description": "Generador privado de reportes editoriales para redes sociales.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#11161d",
+  "theme_color": "#11161d",
+  "icons": [
+    {
+      "src": "/icons/serenita-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
