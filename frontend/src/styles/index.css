@@ -246,18 +246,16 @@ button {
 }
 
 .sidebar-link {
-  min-height: 56px;
+  min-height: 48px;
   border: 0;
   border-radius: var(--md-sys-shape-corner-extra-large);
-  padding: 6px 12px;
+  padding: 8px 12px;
   color: inherit;
   background: transparent;
   text-align: center;
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr);
-  grid-template-areas:
-    "icon label"
-    "icon description";
+  grid-template-areas: "icon label";
   column-gap: 12px;
   row-gap: 2px;
   align-items: center;

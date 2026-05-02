@@ -216,7 +216,7 @@ function App() {
             aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
             title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
           >
-            <span aria-hidden="true">{isSidebarCollapsed ? "Menu" : "<"}</span>
+            <span aria-hidden="true">{isSidebarCollapsed ? "☰" : "☰"}</span>
           </button>
 
           <nav className="sidebar-nav">
@@ -232,7 +232,6 @@ function App() {
                   <span className="nav-rail-icon">{section.icon}</span>
                 </span>
                 <strong>{section.navTitle}</strong>
-                <span>{section.description}</span>
               </button>
             ))}
           </nav>
@@ -242,7 +241,7 @@ function App() {
           <p>{session.user.email}</p>
           <button type="button" className="button button-ghost logout-button" onClick={handleLogout}>
             <span className="logout-full-label">Cerrar sesion</span>
-            <span className="logout-short-label">Salir</span>
+            <span className="logout-short-label">🚪</span>
           </button>
         </div>
       </aside>
