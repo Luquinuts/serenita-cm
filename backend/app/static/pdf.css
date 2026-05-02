@@ -31,10 +31,12 @@ body {
 
 .page {
   width: 210mm;
-  min-height: 297mm;
-  padding: 24mm 18mm 18mm;
+  height: 297mm;
+  padding: 18mm 15mm 14mm;
   background: var(--bg);
   page-break-after: always;
+  position: relative;
+  overflow: hidden;
 }
 
 .page:last-child {
@@ -79,7 +81,7 @@ body {
 
 .account {
   margin: 5mm 0 0;
-  font-size: 31pt;
+  font-size: 29pt;
   line-height: 0.92;
   text-transform: uppercase;
   color: var(--white-soft);
@@ -87,19 +89,19 @@ body {
 
 .period {
   margin: 3mm 0 0;
-  font-size: 25pt;
+  font-size: 23pt;
   text-transform: uppercase;
   color: var(--white-soft);
   line-height: 0.95;
 }
 
 .pill-row {
-  margin-top: 6mm;
+  margin-top: 5mm;
 }
 
 .pill {
   display: inline-block;
-  padding: 2.5mm 4.5mm;
+  padding: 2.2mm 4mm;
   margin-left: 2mm;
   border: 0.35mm solid rgba(207, 216, 237, 0.4);
   border-radius: 999px;
@@ -111,7 +113,7 @@ body {
 }
 
 .divider {
-  margin: 13mm 0 18mm;
+  margin: 10mm 0 13mm;
   border-top: 0.3mm solid var(--line-strong);
 }
 
@@ -122,10 +124,10 @@ body {
 .metric-card {
   display: inline-block;
   width: calc(33.333% - 4mm);
-  min-height: 42mm;
+  min-height: 37mm;
   margin-right: 4mm;
   margin-bottom: 4mm;
-  padding: 6mm;
+  padding: 5mm;
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
   vertical-align: top;
@@ -142,21 +144,21 @@ body {
 }
 
 .metric-value {
-  margin: 5mm 0 0;
-  font-size: 22pt;
+  margin: 4mm 0 0;
+  font-size: 20pt;
   line-height: 0.96;
   color: var(--white-soft);
 }
 
 .metric-helper {
-  margin: 6mm 0 0;
+  margin: 4.5mm 0 0;
   color: var(--muted);
   font-size: 8pt;
   line-height: 1.5;
 }
 
 .split-stat {
-  margin-top: 7mm;
+  margin-top: 5.5mm;
 }
 
 .split-stat > div {
@@ -177,20 +179,20 @@ body {
 }
 
 .section-space {
-  margin-top: 10mm;
+  margin-top: 7mm;
 }
 
 .teaser-grid {
   font-size: 0;
-  margin-top: 6mm;
+  margin-top: 5mm;
 }
 
 .teaser-card {
   display: inline-block;
   width: calc(33.333% - 3mm);
-  min-height: 24mm;
+  min-height: 22mm;
   margin-right: 4.5mm;
-  padding: 5mm 4.5mm;
+  padding: 4.5mm 4mm;
   border: 0.35mm solid rgba(220, 226, 237, 0.14);
   border-radius: 6mm;
   vertical-align: top;
@@ -233,16 +235,16 @@ body {
 }
 
 .publication-list {
-  margin-bottom: 10mm;
+  margin-bottom: 7mm;
 }
 
 .publication-card {
   display: table;
   width: 100%;
-  margin-bottom: 4mm;
+  margin-bottom: 3.5mm;
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
-  padding: 6mm 5.5mm;
+  padding: 5mm 5mm;
   background: var(--bg-panel);
 }
 
@@ -254,13 +256,13 @@ body {
 
 .publication-order {
   width: 18mm;
-  font-size: 25pt;
+  font-size: 23pt;
   font-weight: 700;
   color: var(--white-soft);
 }
 
 .publication-title {
-  margin: 2mm 0 5mm;
+  margin: 1.5mm 0 4mm;
   color: var(--white-soft);
   font-size: 13pt;
   line-height: 1;
@@ -294,13 +296,13 @@ body {
 
 .publication-metric strong {
   display: block;
-  font-size: 15pt;
+  font-size: 14pt;
   line-height: 1;
 }
 
 .publication-metric span {
   display: block;
-  margin-top: 2mm;
+  margin-top: 1.6mm;
   color: var(--muted);
   font-size: 6.8pt;
   letter-spacing: 1.2pt;
@@ -314,8 +316,8 @@ body {
 .info-card {
   display: inline-block;
   width: calc(50% - 2mm);
-  min-height: 58mm;
-  padding: 6mm;
+  min-height: 50mm;
+  padding: 5mm;
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
   vertical-align: top;
@@ -327,11 +329,11 @@ body {
 }
 
 .info-list {
-  margin-top: 8mm;
+  margin-top: 6mm;
 }
 
 .info-row {
-  margin-bottom: 6mm;
+  margin-bottom: 4.5mm;
 }
 
 .info-row span,
@@ -353,7 +355,7 @@ body {
 .gender-card {
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
-  padding: 7mm;
+  padding: 5.5mm;
   background: var(--bg-panel);
 }
 
@@ -364,9 +366,9 @@ body {
 }
 
 .donut-svg {
-  width: 32mm;
-  height: 32mm;
-  margin-right: 16mm;
+  width: 29mm;
+  height: 29mm;
+  margin-right: 14mm;
 }
 
 .gender-stats span {
@@ -384,7 +386,7 @@ body {
 
 .insights-grid {
   font-size: 0;
-  margin-top: 8mm;
+  margin-top: 7mm;
 }
 
 .insight-card,
@@ -392,8 +394,8 @@ body {
 .empty-card {
   display: inline-block;
   width: calc(50% - 2mm);
-  min-height: 36mm;
-  padding: 6mm;
+  min-height: 34mm;
+  padding: 5.5mm;
   margin-bottom: 4mm;
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
@@ -429,7 +431,11 @@ body {
 }
 
 .footer {
-  margin-top: 18mm;
+  position: absolute;
+  left: 15mm;
+  right: 15mm;
+  bottom: 14mm;
+  margin-top: 0;
   padding-top: 5mm;
   border-top: 0.3mm solid var(--line-strong);
 }
@@ -442,15 +448,15 @@ body {
 }
 
 .suggestions-list {
-  margin-top: 8mm;
+  margin-top: 7mm;
 }
 
 .suggestion-card {
   display: table;
   width: 100%;
-  min-height: 28mm;
-  margin-bottom: 4mm;
-  padding: 6mm;
+  min-height: 26mm;
+  margin-bottom: 3.5mm;
+  padding: 5mm;
   border: 0.35mm solid var(--line);
   border-radius: 7mm;
   background: var(--bg-panel);
@@ -465,7 +471,7 @@ body {
 .suggestion-step {
   width: 16mm;
   font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
-  font-size: 22pt;
+  font-size: 20pt;
   font-weight: 700;
   color: var(--white-soft);
 }
@@ -474,7 +480,7 @@ body {
   margin: 2mm 0 0;
   color: #b7c0d1;
   font-size: 9.5pt;
-  line-height: 1.75;
+  line-height: 1.6;
 }
 
 .accent-green,
