@@ -127,6 +127,35 @@ function App() {
     localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isSidebarCollapsed));
   }, [isSidebarCollapsed]);
 
+  useEffect(() => {
+    // Open privacy page if pathname matches
+    if (typeof window !== "undefined" && window.location.pathname === "/politicas") {
+      setShowPrivacyPolicy(true);
+    }
+
+    const onPop = () => {
+      if (typeof window !== "undefined") {
+        setShowPrivacyPolicy(window.location.pathname === "/politicas");
+      }
+    };
+
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (showPrivacyPolicy) {
+      if (window.location.pathname !== "/politicas") {
+        history.pushState({}, "", "/politicas");
+      }
+    } else {
+      if (window.location.pathname === "/politicas") {
+        history.pushState({}, "", "/");
+      }
+    }
+  }, [showPrivacyPolicy]);
+
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoggingIn(true);
