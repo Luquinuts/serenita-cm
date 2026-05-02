@@ -20,13 +20,6 @@ type ApiValidationDetail = {
   msg?: string;
 };
 
-type ReportRecord = {
-  id: string;
-  title: string | null;
-  payload: ReportData;
-  created_at: string;
-};
-
 type ReportGeneratorSectionProps = {
   userId: string;
 };
@@ -69,41 +62,12 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<string>("Listo para generar el balance.");
   const [isGenerating, setIsGenerating] = useState(false);
-  const [reportHistory, setReportHistory] = useState<ReportRecord[]>([]);
-  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
-  const [historyStatus, setHistoryStatus] = useState("");
-  const [downloadingReportId, setDownloadingReportId] = useState<string | null>(null);
 
   useEffect(() => {
     saveReportToStorage(formData);
   }, [formData]);
 
-  useEffect(() => {
-    void loadReportHistory();
-  }, [userId]);
-
   const previewData = useMemo(() => formData, [formData]);
-
-  async function loadReportHistory() {
-    setIsHistoryLoading(true);
-    setHistoryStatus("");
-
-    const { data, error } = await supabase
-      .from("reports")
-      .select("id,title,payload,created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(20);
-
-    setIsHistoryLoading(false);
-
-    if (error) {
-      setHistoryStatus("No se pudo cargar el historial.");
-      return;
-    }
-
-    setReportHistory((data ?? []).map((item) => ({ ...item, payload: hydrateReportData(item.payload) })));
-  }
 
   function updateField<K extends keyof ReportData>(key: K, value: ReportData[K]) {
     setFormData((current) => ({ ...current, [key]: value }));
@@ -370,50 +334,9 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
     });
 
     if (error) {
-      setHistoryStatus("El PDF se genero, pero no se pudo guardar en el historial.");
+      setStatus("El PDF se genero, pero no se pudo guardar en el historial.");
       return;
     }
-
-    await loadReportHistory();
-  }
-
-  async function downloadHistoricalReport(record: ReportRecord) {
-    setDownloadingReportId(record.id);
-    setHistoryStatus("Preparando descarga...");
-
-    try {
-      const response = await fetch(`${API_URL}/api/report/pdf`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(record.payload),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(formatApiError(errorData?.detail));
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `serenita-cm-${record.payload.cuenta || "reporte"}-${record.payload.periodo || "mensual"}.pdf`;
-      link.click();
-      URL.revokeObjectURL(url);
-      setHistoryStatus("Reporte descargado.");
-    } catch (error) {
-      setHistoryStatus(error instanceof Error ? error.message : "No se pudo redescargar el reporte.");
-    } finally {
-      setDownloadingReportId(null);
-    }
-  }
-
-  function loadHistoricalReport(record: ReportRecord) {
-    setFormData(hydrateReportData(record.payload));
-    setErrors({});
-    setStatus("Reporte cargado desde el historial.");
   }
 
   function clearForm() {
@@ -496,47 +419,6 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
         </div>
 
         <p className="status-line">{status}</p>
-
-        <div className="form-section history-section">
-          <div className="section-heading">
-            <h2>Historial de reportes</h2>
-            <button type="button" className="button button-ghost small" onClick={loadReportHistory} disabled={isHistoryLoading}>
-              {isHistoryLoading ? "Actualizando..." : "Actualizar"}
-            </button>
-          </div>
-
-          {historyStatus ? <p className="status-line">{historyStatus}</p> : null}
-
-          {reportHistory.length > 0 ? (
-            <div className="history-list">
-              {reportHistory.map((record) => (
-                <article className="history-card" key={record.id}>
-                  <div>
-                    <strong>{record.title ?? "Reporte sin titulo"}</strong>
-                    <span>{new Date(record.created_at).toLocaleDateString("es-AR")}</span>
-                  </div>
-                  <div className="history-actions">
-                    <button type="button" className="button button-ghost small" onClick={() => loadHistoricalReport(record)}>
-                      Cargar
-                    </button>
-                    <button
-                      type="button"
-                      className="button button-secondary small"
-                      onClick={() => downloadHistoricalReport(record)}
-                      disabled={downloadingReportId === record.id}
-                    >
-                      {downloadingReportId === record.id ? "Descargando..." : "Descargar PDF"}
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <p className="history-empty">
-              {isHistoryLoading ? "Buscando reportes guardados..." : "Todavia no hay reportes guardados para este usuario."}
-            </p>
-          )}
-        </div>
 
         <div className="form-section">
           <h2>Datos base</h2>

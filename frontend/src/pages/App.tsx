@@ -1,44 +1,37 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
+import { ReportHistorySection } from "../sections/ReportHistorySection";
 import serenitaLogo from "../assets/serenita-logo.svg";
 import { supabase } from "../lib/supabase";
 
 const VIEW_STORAGE_KEY = "serenita-cm:active-view";
+const THEME_STORAGE_KEY = "serenita-cm:theme";
 
-const modules = [
+const sections = [
   {
     id: "reports",
-    eyebrow: "Activo",
     title: "Generador de reportes",
     description: "Carga balances, revisa la preview editorial y exporta el PDF final.",
-    available: true,
   },
   {
-    id: "calendar",
-    eyebrow: "Proximo",
-    title: "Calendario editorial",
-    description: "Planificacion mensual de ideas, piezas y fechas clave.",
-    available: false,
-  },
-  {
-    id: "assets",
-    eyebrow: "Proximo",
-    title: "Biblioteca de activos",
-    description: "Repositorio de creatividades, textos y referencias reutilizables.",
-    available: false,
+    id: "history",
+    title: "Historial de reportes",
+    description: "Consulta y redescarga los PDFs generados anteriormente.",
   },
   {
     id: "settings",
-    eyebrow: "Proximo",
-    title: "Configuracion",
-    description: "Perfiles, accesos y parametros operativos de la cuenta.",
-    available: false,
+    title: "Ajustes",
+    description: "Personaliza la apariencia de la app.",
   },
 ] as const;
 
-type ModuleId = (typeof modules)[number]["id"];
-type AppView = "login" | "menu" | "reports";
+type AppSection = (typeof sections)[number]["id"];
+type ThemeMode = "dark" | "light";
+
+function resolveStoredSection(value: string | null): AppSection {
+  return sections.some((section) => section.id === value) ? (value as AppSection) : "reports";
+}
 
 function App() {
   const [email, setEmail] = useState("");
@@ -47,21 +40,23 @@ function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [activeModule, setActiveModule] = useState<ModuleId>("reports");
-  const [currentView, setCurrentView] = useState<AppView>("login");
+  const [activeSection, setActiveSection] = useState<AppSection>("reports");
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    return (localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null) ?? "dark";
+  });
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      const storedView = sessionStorage.getItem(VIEW_STORAGE_KEY) as AppView | null;
+      const storedView = resolveStoredSection(sessionStorage.getItem(VIEW_STORAGE_KEY));
       setSession(data.session);
-      setCurrentView(data.session && storedView ? storedView : data.session ? "menu" : "login");
+      setActiveSection(data.session && storedView ? storedView : "reports");
       setIsAuthLoading(false);
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      const storedView = sessionStorage.getItem(VIEW_STORAGE_KEY) as AppView | null;
+      const storedView = resolveStoredSection(sessionStorage.getItem(VIEW_STORAGE_KEY));
       setSession(nextSession);
-      setCurrentView(nextSession && storedView ? storedView : nextSession ? "menu" : "login");
+      setActiveSection(nextSession && storedView ? storedView : "reports");
       setIsAuthLoading(false);
     });
 
@@ -70,9 +65,14 @@ function App() {
     };
   }, []);
 
-  const activeModuleData = useMemo(
-    () => modules.find((module) => module.id === activeModule) ?? modules[0],
-    [activeModule],
+  useEffect(() => {
+    document.documentElement.dataset.theme = themeMode;
+    localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+  }, [themeMode]);
+
+  const activeSectionData = useMemo(
+    () => sections.find((section) => section.id === activeSection) ?? sections[0],
+    [activeSection],
   );
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
@@ -92,30 +92,22 @@ function App() {
       return;
     }
 
-    sessionStorage.setItem(VIEW_STORAGE_KEY, "menu");
+    sessionStorage.setItem(VIEW_STORAGE_KEY, "reports");
     setLoginError("");
     setPassword("");
-    setCurrentView("menu");
+    setActiveSection("reports");
   }
 
   async function handleLogout() {
     await supabase.auth.signOut();
     sessionStorage.removeItem(VIEW_STORAGE_KEY);
     setSession(null);
-    setActiveModule("reports");
-    setCurrentView("login");
+    setActiveSection("reports");
   }
 
-  function openModule(moduleId: ModuleId) {
-    setActiveModule(moduleId);
-    const nextView: AppView = moduleId === "reports" ? "reports" : "menu";
-    setCurrentView(nextView);
-    sessionStorage.setItem(VIEW_STORAGE_KEY, nextView);
-  }
-
-  function goToMenu() {
-    setCurrentView("menu");
-    sessionStorage.setItem(VIEW_STORAGE_KEY, "menu");
+  function openSection(sectionId: AppSection) {
+    setActiveSection(sectionId);
+    sessionStorage.setItem(VIEW_STORAGE_KEY, sectionId);
   }
 
   if (isAuthLoading) {
@@ -134,7 +126,7 @@ function App() {
     );
   }
 
-  if (!session || currentView === "login") {
+  if (!session) {
     return (
       <div className="login-shell">
         <section className="login-card">
@@ -191,68 +183,83 @@ function App() {
     );
   }
 
-  if (currentView === "menu") {
-    return (
-      <div className="menu-shell">
-        <header className="menu-hero panel">
-          <div className="brand-lockup">
+  return (
+    <div className="app-shell">
+      <aside className="app-sidebar panel" aria-label="Navegacion principal">
+        <div className="sidebar-main">
+          <div className="brand-lockup sidebar-brand">
             <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
             <div>
               <p className="brand-kicker">Serenita CM Suite</p>
-              <h1 className="workspace-title">Menu principal</h1>
+              <strong>Panel</strong>
             </div>
           </div>
-          <div className="menu-copy">
-            <p className="workspace-copy">
-              Desde aca elegis la funcionalidad que queres usar. El generador de reportes ya esta activo y el resto de
-              modulos queda preparado para futuras etapas.
-            </p>
-          </div>
-          <button type="button" className="button button-ghost logout-button menu-logout" onClick={handleLogout}>
+
+          <nav className="sidebar-nav">
+            {sections.map((section) => (
+              <button
+                key={section.id}
+                type="button"
+                className={`sidebar-link${activeSection === section.id ? " active" : ""}`}
+                onClick={() => openSection(section.id)}
+              >
+                <strong>{section.title}</strong>
+                <span>{section.description}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <div className="sidebar-footer">
+          <p>{session.user.email}</p>
+          <button type="button" className="button button-ghost logout-button" onClick={handleLogout}>
             Cerrar sesion
           </button>
+        </div>
+      </aside>
+
+      <main className="app-main">
+        <header className="workspace-header panel report-page-header">
+          <div>
+            <p className="brand-kicker">Modulo activo</p>
+            <h2>{activeSectionData.title}</h2>
+            <p>{activeSectionData.description}</p>
+          </div>
         </header>
 
-        <main className="menu-grid" aria-label="Modulos disponibles">
-          {modules.map((module) => (
-            <button
-              key={module.id}
-              type="button"
-              className={`menu-module-card${module.id === activeModule ? " active" : ""}`}
-              onClick={() => openModule(module.id)}
-            >
-              <span className="module-eyebrow">{module.eyebrow}</span>
-              <strong>{module.title}</strong>
-              <span>{module.description}</span>
-            </button>
-          ))}
-        </main>
-      </div>
-    );
-  }
-
-  return (
-    <div className="report-page-shell">
-      <header className="workspace-header panel report-page-header">
-        <div className="brand-lockup">
-          <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
-          <div>
-            <p className="brand-kicker">{activeModuleData.eyebrow}</p>
-            <h2>{activeModuleData.title}</h2>
-            <p>{activeModuleData.description}</p>
-          </div>
-        </div>
-        <div className="report-page-actions">
-          <button type="button" className="button button-ghost" onClick={goToMenu}>
-            Volver al menu
-          </button>
-          <button type="button" className="button button-ghost" onClick={handleLogout}>
-            Cerrar sesion
-          </button>
-        </div>
-      </header>
-
-      <ReportGeneratorSection userId={session.user.id} />
+        {activeSection === "reports" ? <ReportGeneratorSection userId={session.user.id} /> : null}
+        {activeSection === "history" ? <ReportHistorySection userId={session.user.id} /> : null}
+        {activeSection === "settings" ? (
+          <section className="panel workspace-content-panel">
+            <p className="brand-kicker">Preferencias</p>
+            <h1 className="workspace-title">Ajustes</h1>
+            <div className="settings-list">
+              <article className="settings-row">
+                <div>
+                  <strong>Modo de apariencia</strong>
+                  <span>Cambia entre modo oscuro y modo claro para toda la app.</span>
+                </div>
+                <div className="segmented-control" aria-label="Modo de apariencia">
+                  <button
+                    type="button"
+                    className={themeMode === "dark" ? "active" : ""}
+                    onClick={() => setThemeMode("dark")}
+                  >
+                    Oscuro
+                  </button>
+                  <button
+                    type="button"
+                    className={themeMode === "light" ? "active" : ""}
+                    onClick={() => setThemeMode("light")}
+                  >
+                    Claro
+                  </button>
+                </div>
+              </article>
+            </div>
+          </section>
+        ) : null}
+      </main>
     </div>
   );
 }
