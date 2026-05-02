@@ -227,9 +227,22 @@ button {
 .sidebar-topbar {
   min-height: 34px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 28px;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
+}
+
+.sidebar-brand-button {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  padding: 3px 4px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.sidebar-brand-button:hover {
+  background: var(--md-sys-state-hover);
 }
 
 .sidebar-brand strong {
@@ -237,20 +250,6 @@ button {
   color: var(--text-strong);
   font-size: 0.86rem;
   line-height: 1.2;
-}
-
-.sidebar-toggle {
-  width: 28px;
-  height: 28px;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--md-sys-color-on-surface-variant);
-  display: grid;
-  place-items: center;
-  margin-right: 0;
-  align-self: flex-start;
-  font-weight: 700;
 }
 
 .sidebar-nav {
@@ -341,7 +340,7 @@ button {
 }
 
 .sidebar-link:focus-visible,
-.sidebar-toggle:focus-visible,
+.sidebar-brand-button:focus-visible,
 .button:focus-visible,
 .segmented-control button:focus-visible {
   outline: 3px solid var(--md-sys-color-primary);
@@ -357,10 +356,6 @@ button {
 
 .sidebar-footer p {
   margin: 0;
-}
-
-.logout-short-label {
-  display: none;
 }
 
 .app-main {
@@ -396,24 +391,14 @@ button {
   display: none;
 }
 
-.sidebar-collapsed .logout-short-label {
-  display: inline;
-}
-
-.sidebar-collapsed .logout-button {
-  width: 100%;
-  padding-inline: 8px;
-  min-width: 0;
+.sidebar-collapsed .sidebar-footer {
+  display: none;
 }
 
 .sidebar-collapsed .brand-logo {
   width: 28px;
   height: 28px;
   border-radius: 7px;
-}
-
-.sidebar-collapsed .sidebar-toggle {
-  margin: 0;
 }
 
 .sidebar-collapsed .sidebar-link {

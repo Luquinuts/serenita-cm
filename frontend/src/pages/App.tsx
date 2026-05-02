@@ -216,21 +216,17 @@ function App() {
       <aside className="app-sidebar panel" aria-label="Navegacion principal">
         <div className="sidebar-main">
           <div className="sidebar-topbar">
-            <div className="brand-lockup sidebar-brand">
-              <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
-              <div>
-                <strong>serenita-cm</strong>
-              </div>
-            </div>
-
             <button
               type="button"
-              className="sidebar-toggle"
+              className="brand-lockup sidebar-brand sidebar-brand-button"
               onClick={() => setIsSidebarCollapsed((current) => !current)}
               aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
               title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
             >
-              <span aria-hidden="true">{isSidebarCollapsed ? ">" : "<"}</span>
+              <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
+              <div>
+                <strong>serenita-cm</strong>
+              </div>
             </button>
           </div>
 
@@ -258,7 +254,6 @@ function App() {
           <p>{session.user.email}</p>
           <button type="button" className="button button-ghost logout-button" onClick={handleLogout}>
             <span className="logout-full-label">Cerrar sesion</span>
-            <span className="logout-short-label">Salir</span>
           </button>
         </div>
       </aside>
