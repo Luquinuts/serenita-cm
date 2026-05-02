@@ -152,6 +152,28 @@ en Vercel la variable `VITE_API_URL` con la URL publica del backend, por ejemplo
 VITE_API_URL=https://tu-backend.example.com
 ```
 
+## Supabase
+
+La app usa Supabase para inicio de sesión e historial de reportes. En Vercel se usan
+las variables generadas por la integracion de Supabase:
+
+```text
+VITE_SUPABASE_SUPABASE_URL=https://tu-proyecto.supabase.co
+VITE_SUPABASE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
+```
+
+Tambien funciona con `VITE_SUPABASE_SUPABASE_ANON_KEY` si todavia usas la key anon
+legada.
+
+Para crear las tablas y las politicas de seguridad, ejecuta el SQL de
+[supabase/schema.sql](supabase/schema.sql) en el SQL Editor de Supabase.
+
+Por ahora no hay registro publico. Los usuarios se crean manualmente desde:
+
+```text
+Supabase > Authentication > Users > Add user
+```
+
 ## Dataset inicial
 
 El ejemplo base está en [shared/sample-report.json](shared/sample-report.json).

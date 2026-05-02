@@ -486,6 +486,52 @@ button {
   gap: 12px;
 }
 
+.history-section {
+  border-top-color: rgba(39, 192, 140, 0.14);
+}
+
+.history-list {
+  display: grid;
+  gap: 12px;
+}
+
+.history-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid rgba(216, 223, 235, 0.1);
+  border-radius: 20px;
+  padding: 14px;
+  background: rgba(12, 17, 24, 0.7);
+}
+
+.history-card strong,
+.history-card span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.history-card strong {
+  color: #edf2f8;
+}
+
+.history-card span,
+.history-empty {
+  color: var(--text-soft);
+}
+
+.history-empty {
+  margin: 0;
+}
+
+.history-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .nested-card {
   border: 1px solid rgba(216, 223, 235, 0.1);
   border-radius: 24px;
@@ -1105,6 +1151,15 @@ button {
   }
 
   .section-heading .button {
+    width: 100%;
+  }
+
+  .history-card {
+    grid-template-columns: 1fr;
+  }
+
+  .history-actions,
+  .history-actions .button {
     width: 100%;
   }
 

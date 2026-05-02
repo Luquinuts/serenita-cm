@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Session } from "@supabase/supabase-js";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
 import serenitaLogo from "../assets/serenita-logo.svg";
+import { supabase } from "../lib/supabase";
 
-const ACCESS_CODE = "071123";
-const AUTH_STORAGE_KEY = "serenita-cm:authenticated";
 const VIEW_STORAGE_KEY = "serenita-cm:active-view";
 
 const modules = [
@@ -41,18 +41,33 @@ type ModuleId = (typeof modules)[number]["id"];
 type AppView = "login" | "menu" | "reports";
 
 function App() {
-  const [accessCode, setAccessCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [activeModule, setActiveModule] = useState<ModuleId>("reports");
   const [currentView, setCurrentView] = useState<AppView>("login");
 
   useEffect(() => {
-    const authenticated = sessionStorage.getItem(AUTH_STORAGE_KEY) === "true";
-    const storedView = sessionStorage.getItem(VIEW_STORAGE_KEY) as AppView | null;
+    supabase.auth.getSession().then(({ data }) => {
+      const storedView = sessionStorage.getItem(VIEW_STORAGE_KEY) as AppView | null;
+      setSession(data.session);
+      setCurrentView(data.session && storedView ? storedView : data.session ? "menu" : "login");
+      setIsAuthLoading(false);
+    });
 
-    setIsAuthenticated(authenticated);
-    setCurrentView(authenticated && storedView ? storedView : authenticated ? "menu" : "login");
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      const storedView = sessionStorage.getItem(VIEW_STORAGE_KEY) as AppView | null;
+      setSession(nextSession);
+      setCurrentView(nextSession && storedView ? storedView : nextSession ? "menu" : "login");
+      setIsAuthLoading(false);
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   const activeModuleData = useMemo(
@@ -60,26 +75,33 @@ function App() {
     [activeModule],
   );
 
-  function handleLogin(event: FormEvent<HTMLFormElement>) {
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError("");
 
-    if (accessCode !== ACCESS_CODE) {
-      setLoginError("Codigo incorrecto. Revisa el acceso e intenta nuevamente.");
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setIsLoggingIn(false);
+
+    if (error) {
+      setLoginError("Email o contrasena incorrectos. Revisa tus datos e intenta nuevamente.");
       return;
     }
 
-    sessionStorage.setItem(AUTH_STORAGE_KEY, "true");
     sessionStorage.setItem(VIEW_STORAGE_KEY, "menu");
     setLoginError("");
-    setAccessCode("");
-    setIsAuthenticated(true);
+    setPassword("");
     setCurrentView("menu");
   }
 
-  function handleLogout() {
-    sessionStorage.removeItem(AUTH_STORAGE_KEY);
+  async function handleLogout() {
+    await supabase.auth.signOut();
     sessionStorage.removeItem(VIEW_STORAGE_KEY);
-    setIsAuthenticated(false);
+    setSession(null);
     setActiveModule("reports");
     setCurrentView("login");
   }
@@ -96,7 +118,23 @@ function App() {
     sessionStorage.setItem(VIEW_STORAGE_KEY, "menu");
   }
 
-  if (!isAuthenticated || currentView === "login") {
+  if (isAuthLoading) {
+    return (
+      <div className="login-shell">
+        <section className="login-card">
+          <div className="brand-lockup">
+            <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
+            <div>
+              <p className="brand-kicker">Serenita CM Suite</p>
+              <h1>Preparando tu espacio</h1>
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  if (!session || currentView === "login") {
     return (
       <div className="login-shell">
         <section className="login-card">
@@ -109,32 +147,44 @@ function App() {
               </div>
             </div>
             <p>
-              Esta app ahora funciona como base para varios modulos. Ingresa el codigo de acceso para entrar al panel y
-              usar el generador de reportes.
+              Ingresa con tu email y contrasena para entrar al panel, generar reportes y consultar tu historial.
             </p>
           </div>
 
           <form className="login-form" onSubmit={handleLogin}>
             <label className="field">
-              <span>Codigo de acceso</span>
+              <span>Email</span>
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="tu@email.com"
+                autoComplete="email"
+                required
+              />
+            </label>
+
+            <label className="field">
+              <span>Contrasena</span>
               <input
                 type="password"
-                inputMode="numeric"
-                value={accessCode}
-                onChange={(event) => setAccessCode(event.target.value)}
-                placeholder="Ingresa el codigo"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                placeholder="Ingresa tu contrasena"
+                autoComplete="current-password"
+                required
               />
             </label>
 
             {loginError ? <p className="login-error">{loginError}</p> : null}
 
-            <button type="submit" className="button button-primary login-button">
-              Ingresar
+            <button type="submit" className="button button-primary login-button" disabled={isLoggingIn}>
+              {isLoggingIn ? "Ingresando..." : "Ingresar"}
             </button>
           </form>
 
           <div className="login-note">
-            <strong>Acceso actual:</strong> modulo privado para operaciones internas y futuras funcionalidades.
+            <strong>Acceso privado:</strong> las cuentas se habilitan manualmente hasta activar el alta con pago mensual.
           </div>
         </section>
       </div>
@@ -202,7 +252,7 @@ function App() {
         </div>
       </header>
 
-      <ReportGeneratorSection />
+      <ReportGeneratorSection userId={session.user.id} />
     </div>
   );
 }
