@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
+import serenitaLogo from "../assets/serenita-logo.svg";
 
 const ACCESS_CODE = "071123";
 const AUTH_STORAGE_KEY = "serenita-cm:authenticated";
@@ -100,8 +101,13 @@ function App() {
       <div className="login-shell">
         <section className="login-card">
           <div className="login-hero">
-            <p className="brand-kicker">Serenita CM Suite</p>
-            <h1>Acceso centralizado para el equipo</h1>
+            <div className="brand-lockup">
+              <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
+              <div>
+                <p className="brand-kicker">Serenita CM Suite</p>
+                <h1>Acceso centralizado para el equipo</h1>
+              </div>
+            </div>
             <p>
               Esta app ahora funciona como base para varios modulos. Ingresa el codigo de acceso para entrar al panel y
               usar el generador de reportes.
@@ -139,9 +145,14 @@ function App() {
     return (
       <div className="menu-shell">
         <header className="menu-hero panel">
-          <div>
-            <p className="brand-kicker">Serenita CM Suite</p>
-            <h1 className="workspace-title">Menu principal</h1>
+          <div className="brand-lockup">
+            <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
+            <div>
+              <p className="brand-kicker">Serenita CM Suite</p>
+              <h1 className="workspace-title">Menu principal</h1>
+            </div>
+          </div>
+          <div className="menu-copy">
             <p className="workspace-copy">
               Desde aca elegis la funcionalidad que queres usar. El generador de reportes ya esta activo y el resto de
               modulos queda preparado para futuras etapas.
@@ -173,10 +184,13 @@ function App() {
   return (
     <div className="report-page-shell">
       <header className="workspace-header panel report-page-header">
-        <div>
-          <p className="brand-kicker">{activeModuleData.eyebrow}</p>
-          <h2>{activeModuleData.title}</h2>
-          <p>{activeModuleData.description}</p>
+        <div className="brand-lockup">
+          <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
+          <div>
+            <p className="brand-kicker">{activeModuleData.eyebrow}</p>
+            <h2>{activeModuleData.title}</h2>
+            <p>{activeModuleData.description}</p>
+          </div>
         </div>
         <div className="report-page-actions">
           <button type="button" className="button button-ghost" onClick={goToMenu}>

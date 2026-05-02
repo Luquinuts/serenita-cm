@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Serenita CM</title>
+  <defs>
+    <linearGradient id="serenita-bg" x1="119" y1="44" x2="394" y2="474" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b16df3"/>
+      <stop offset="0.47" stop-color="#9aa8ff"/>
+      <stop offset="1" stop-color="#61ddc9"/>
+    </linearGradient>
+  </defs>
+  <rect x="38" y="22" width="436" height="468" rx="118" fill="url(#serenita-bg)"/>
+  <path
+    fill="#fff"
+    d="M330 91c-31-11-73-14-106-5-44 11-77 40-88 78-10 35 1 68 31 90 24 17 54 25 83 34 29 9 58 18 75 40 20 25 18 66-5 91 42-16 66-49 65-85-2-55-54-78-101-92-33-10-74-20-87-55-11-29 6-62 34-77 28-16 66-16 99-19Z"
+  />
+  <path
+    fill="#fff"
+    d="M156 290c-22 8-39 26-45 49-6 26 4 54 27 69l-19 59c-2 7 5 13 11 9l49-30c13 4 28 7 44 7 58 0 105-34 105-76s-47-76-105-76c-24 0-46 6-67 16Z"
+  />
+  <circle cx="179" cy="382" r="10" fill="#7ab7df"/>
+  <circle cx="216" cy="382" r="10" fill="#7ab7df"/>
+  <circle cx="253" cy="382" r="10" fill="#7ab7df"/>
+  <path
+    fill="#fff"
+    d="M384 82c11 32 19 41 51 52-32 11-40 19-51 52-11-33-19-41-52-52 33-11 41-20 52-52Z"
+  />
+</svg>

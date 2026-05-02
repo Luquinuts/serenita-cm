@@ -25,9 +25,14 @@
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+}
+
 body {
   margin: 0;
   color: #e7ebf2;
+  overflow-x: hidden;
 }
 
 button,
@@ -62,6 +67,31 @@ button {
     radial-gradient(circle at top left, rgba(39, 192, 140, 0.18), transparent 26%),
     rgba(17, 24, 33, 0.9);
   box-shadow: 0 24px 90px rgba(0, 0, 0, 0.28);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.brand-lockup > div {
+  min-width: 0;
+}
+
+.brand-logo {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 auto;
+  border-radius: 18px;
+  box-shadow: 0 14px 34px rgba(40, 214, 196, 0.18);
+}
+
+.brand-logo-large {
+  width: 96px;
+  height: 96px;
+  border-radius: 26px;
 }
 
 .login-hero h1,
@@ -133,9 +163,13 @@ button {
   align-items: flex-end;
 }
 
+.menu-copy {
+  max-width: 520px;
+}
+
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 18px;
 }
 
@@ -303,6 +337,7 @@ button {
 
 .panel-preview {
   padding: 24px;
+  overflow: hidden;
 }
 
 .brand-block h1,
@@ -346,6 +381,7 @@ button {
   border: 1px solid rgba(219, 224, 233, 0.18);
   background: transparent;
   color: #f1f4fb;
+  min-height: 44px;
 }
 
 .button.small {
@@ -887,8 +923,8 @@ button {
     max-height: none;
   }
 
-  .menu-grid {
-    grid-template-columns: 1fr;
+  .panel-preview {
+    overflow-x: auto;
   }
 }
 
@@ -915,6 +951,11 @@ button {
   .report-page-header {
     flex-direction: column;
     align-items: start;
+  }
+
+  .report-page-actions,
+  .report-page-actions .button {
+    width: 100%;
   }
 
   .report-page {
@@ -955,5 +996,164 @@ button {
   .publication-metrics.columns-4,
   .publication-metrics.columns-5 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .login-shell,
+  .menu-shell,
+  .report-page-shell {
+    padding: 14px;
+  }
+
+  .login-card,
+  .menu-hero,
+  .report-page-header,
+  .panel-form,
+  .panel-preview {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .brand-lockup {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 15px;
+  }
+
+  .brand-logo-large {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+  }
+
+  .login-hero h1,
+  .workspace-header h2,
+  .placeholder-panel h2,
+  .workspace-title,
+  .brand-block h1,
+  .preview-header h2 {
+    font-size: 2rem;
+  }
+
+  .brand-kicker,
+  .section-title,
+  .eyebrow,
+  .module-eyebrow {
+    letter-spacing: 0.2em;
+  }
+
+  .menu-module-card {
+    min-height: 170px;
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  .toolbar,
+  .report-page-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar .button,
+  .report-page-actions .button {
+    width: 100%;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .section-heading .button {
+    width: 100%;
+  }
+
+  .inline-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .align-end {
+    width: 100%;
+  }
+
+  .report-page {
+    border-radius: 20px;
+    padding: 24px 18px;
+  }
+
+  .report-account {
+    font-size: 2.35rem;
+  }
+
+  .report-period {
+    font-size: 2rem;
+  }
+
+  .metric-value,
+  .publication-order,
+  .suggestion-step {
+    font-size: 2.4rem;
+  }
+
+  .publication-title {
+    font-size: 1.35rem;
+  }
+
+  .publication-metrics.columns-2,
+  .publication-metrics.columns-3,
+  .publication-metrics.columns-4,
+  .publication-metrics.columns-5 {
+    grid-template-columns: 1fr;
+  }
+
+  .gender-chart {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 460px) {
+  .brand-lockup {
+    flex-direction: column;
+  }
+
+  .login-hero h1,
+  .workspace-header h2,
+  .placeholder-panel h2,
+  .workspace-title,
+  .brand-block h1,
+  .preview-header h2 {
+    font-size: 1.72rem;
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    border-radius: 14px;
+    padding: 11px 12px;
+  }
+
+  .metric-card,
+  .info-card,
+  .publication-card,
+  .gender-card,
+  .insight-card,
+  .suggestion-card,
+  .empty-card {
+    border-radius: 18px;
+  }
+
+  .top-publication-teaser {
+    grid-template-columns: 1fr;
+  }
+
+  .report-footer {
+    flex-direction: column;
   }
 }
