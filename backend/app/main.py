@@ -17,7 +17,7 @@ app = FastAPI(
 def _cors_origins() -> list[str]:
     configured_origins = os.getenv("CORS_ORIGINS", "")
     if configured_origins.strip():
-        return [origin.strip() for origin in configured_origins.split(",") if origin.strip()]
+        return [origin.strip().rstrip("/") for origin in configured_origins.split(",") if origin.strip()]
 
     return [
         "http://localhost:5173",
@@ -30,7 +30,7 @@ def _cors_origins() -> list[str]:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins(),
-    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(:\d+)?$",
+    allow_origin_regex=r"^(https?://(localhost|127\.0\.0\.1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(:\d+)?|https://[a-z0-9-]+\.vercel\.app)$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
