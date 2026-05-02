@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, "Segoe UI", sans-serif;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
   color: #e6e8f0;
   background:
     radial-gradient(circle at top left, rgba(11, 161, 121, 0.18), transparent 30%),
@@ -23,6 +23,7 @@
 
 * {
   box-sizing: border-box;
+  min-width: 0;
 }
 
 html {
@@ -98,12 +99,12 @@ button {
 .workspace-header h2,
 .placeholder-panel h2 {
   margin: 0;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
-  line-height: 0.95;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: 0;
   color: var(--title-soft);
+  overflow-wrap: anywhere;
 }
 
 .login-hero p,
@@ -157,14 +158,14 @@ button {
 
 .menu-hero {
   padding: 32px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(240px, 420px) minmax(260px, 1fr) minmax(180px, 260px);
   gap: 20px;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .menu-copy {
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .menu-grid {
@@ -190,12 +191,12 @@ button {
 }
 
 .menu-module-card strong {
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 2rem;
-  line-height: 0.95;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  line-height: 1.12;
+  letter-spacing: 0;
   color: #eef2f8;
+  overflow-wrap: anywhere;
 }
 
 .menu-module-card span:last-child {
@@ -211,7 +212,7 @@ button {
 }
 
 .menu-logout {
-  width: auto;
+  width: 100%;
 }
 
 .report-page-shell {
@@ -222,10 +223,10 @@ button {
 
 .report-page-header {
   padding: 28px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 24px;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .report-page-actions {
@@ -247,11 +248,10 @@ button {
 
 .workspace-title {
   margin: 0;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: clamp(2rem, 3vw, 2.8rem);
-  line-height: 0.94;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.08;
+  letter-spacing: 0;
 }
 
 .workspace-main {
@@ -284,6 +284,7 @@ button {
 .module-card strong {
   font-size: 1.04rem;
   color: #eef2f8;
+  overflow-wrap: anywhere;
 }
 
 .module-card span:last-child {
@@ -301,8 +302,7 @@ button {
 
 .module-eyebrow {
   font-size: 0.7rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: #6ccfb1;
 }
 
@@ -343,12 +343,12 @@ button {
 .brand-block h1,
 .preview-header h2 {
   margin: 0;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: clamp(2rem, 3vw, 3.2rem);
-  line-height: 0.94;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(1.75rem, 2.6vw, 2.6rem);
+  line-height: 1.08;
+  letter-spacing: 0;
   color: var(--title-soft);
+  overflow-wrap: anywhere;
 }
 
 .brand-block p,
@@ -362,10 +362,10 @@ button {
 .eyebrow {
   margin: 0 0 10px;
   font-size: 0.7rem;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
+  letter-spacing: 0.18em;
   color: #5db99a;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 
 .toolbar {
@@ -382,6 +382,9 @@ button {
   background: transparent;
   color: #f1f4fb;
   min-height: 44px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
 .button.small {
@@ -413,10 +416,11 @@ button {
 
 .form-section h2 {
   margin: 0 0 16px;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: 0;
   color: #d9deea;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .field-grid {
@@ -542,20 +546,20 @@ button {
 .report-account,
 .report-period {
   margin: 0;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  text-transform: uppercase;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
   color: #edf1f7;
-  line-height: 0.95;
-  letter-spacing: 0.03em;
+  line-height: 1.04;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
 }
 
 .report-account {
-  font-size: 4.6rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   max-width: 480px;
 }
 
 .report-period {
-  font-size: 3.2rem;
+  font-size: clamp(2rem, 4.5vw, 3rem);
   text-align: right;
 }
 
@@ -575,10 +579,10 @@ button {
   border-radius: 999px;
   padding: 7px 14px;
   font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: #d6ddf1;
   background: rgba(255, 255, 255, 0.03);
+  overflow-wrap: anywhere;
 }
 
 .divider {
@@ -624,16 +628,18 @@ button {
 
 .metric-value {
   margin: 0;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 3.3rem;
-  line-height: 0.95;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.02;
   color: #f0f3f7;
+  overflow-wrap: anywhere;
 }
 
 .metric-helper {
   margin: 0;
   color: var(--muted);
-  max-width: 20ch;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .top-publications-strip {
@@ -655,7 +661,7 @@ button {
 }
 
 .top-publication-teaser span {
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
   font-size: 2.2rem;
   line-height: 1;
   color: #f2f5f9;
@@ -665,15 +671,16 @@ button {
   display: block;
   margin-bottom: 8px;
   color: #cfd6e7;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.08em;
   font-size: 0.72rem;
+  overflow-wrap: anywhere;
 }
 
 .top-publication-teaser p {
   margin: 0;
   color: #8c97ab;
   line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .publication-list {
@@ -692,8 +699,8 @@ button {
 }
 
 .publication-order {
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 4rem;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(2.5rem, 5vw, 3.6rem);
   font-weight: 700;
   color: #f4f6fa;
   text-align: center;
@@ -702,9 +709,10 @@ button {
 .publication-title {
   margin: 0 0 18px;
   color: #eef2f8;
-  font-size: 1.7rem;
-  line-height: 1;
+  font-size: 1.45rem;
+  line-height: 1.15;
   max-width: 24ch;
+  overflow-wrap: anywhere;
 }
 
 .publication-metrics {
@@ -728,9 +736,10 @@ button {
 
 .publication-metric strong {
   display: block;
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 2.2rem;
-  line-height: 1;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: clamp(1.45rem, 2.8vw, 2rem);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .publication-metric span {
@@ -738,8 +747,8 @@ button {
   margin-top: 6px;
   color: var(--muted);
   font-size: 0.76rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  overflow-wrap: anywhere;
 }
 
 .audience-grid {
@@ -765,10 +774,24 @@ button {
   justify-content: space-between;
   gap: 16px;
   color: var(--muted);
+  overflow-wrap: anywhere;
 }
 
 .info-row strong {
   color: #eef1f7;
+  text-align: right;
+}
+
+.info-row span,
+.info-row strong,
+.report-footer span,
+.menu-module-card span,
+.login-note,
+.workspace-copy,
+.status-line,
+.field span,
+.field small {
+  overflow-wrap: anywhere;
 }
 
 .gender-card {
@@ -797,8 +820,9 @@ button {
 }
 
 .gender-stats strong {
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 2.2rem;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 2rem;
+  overflow-wrap: anywhere;
 }
 
 .insights-grid {
@@ -834,6 +858,7 @@ button {
   margin: 0;
   color: #b5bfd1;
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .suggestions-list {
@@ -853,8 +878,8 @@ button {
 }
 
 .suggestion-step {
-  font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
-  font-size: 3.1rem;
+  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 2.7rem;
   line-height: 1;
   color: #f4f6fa;
 }
@@ -865,6 +890,7 @@ button {
   line-height: 1.8;
   font-size: 1.02rem;
   max-width: 56ch;
+  overflow-wrap: anywhere;
 }
 
 .report-footer {
@@ -926,6 +952,14 @@ button {
   .panel-preview {
     overflow-x: auto;
   }
+
+  .menu-hero {
+    grid-template-columns: minmax(240px, 360px) minmax(260px, 1fr);
+  }
+
+  .menu-logout {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 960px) {
@@ -949,7 +983,7 @@ button {
 
   .menu-hero,
   .report-page-header {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: start;
   }
 
@@ -1045,7 +1079,7 @@ button {
   .section-title,
   .eyebrow,
   .module-eyebrow {
-    letter-spacing: 0.2em;
+    letter-spacing: 0.12em;
   }
 
   .menu-module-card {
