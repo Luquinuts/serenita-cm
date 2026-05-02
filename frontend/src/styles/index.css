@@ -217,7 +217,8 @@ button {
 }
 
 .sidebar-main {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
@@ -236,13 +237,14 @@ button {
   color: var(--md-sys-color-on-surface-variant);
   display: grid;
   place-items: center;
-  margin: 0 auto;
+  margin-left: auto;
   font-weight: 600;
 }
 
 .sidebar-nav {
   display: grid;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .sidebar-link {
@@ -353,6 +355,7 @@ button {
 
 .sidebar-collapsed .sidebar-brand {
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .sidebar-collapsed .sidebar-brand > div,
@@ -379,7 +382,7 @@ button {
 }
 
 .sidebar-collapsed .sidebar-toggle {
-  margin: 0 auto;
+  margin: 0;
 }
 
 .sidebar-collapsed .sidebar-link {
@@ -1357,6 +1360,12 @@ button {
   .menu-logout {
     grid-column: 1 / -1;
   }
+
+  .logout-button {
+    min-height: auto;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
 }
 
 @media (max-width: 960px) {
@@ -1401,6 +1410,12 @@ button {
 
   .sidebar-footer {
     grid-template-columns: 1fr;
+  }
+
+  .logout-button {
+    min-height: auto;
+    padding: 8px 12px;
+    font-size: 0.9rem;
   }
 
   .field-grid,
