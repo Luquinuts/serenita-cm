@@ -14,16 +14,19 @@ const sections = [
     id: "reports",
     title: "Generador de reportes",
     description: "Carga balances, revisa la preview editorial y exporta el PDF final.",
+    icon: "R",
   },
   {
     id: "history",
     title: "Historial de reportes",
     description: "Consulta y redescarga los PDFs generados anteriormente.",
+    icon: "H",
   },
   {
     id: "settings",
     title: "Ajustes",
     description: "Personaliza la apariencia de la app.",
+    icon: "A",
   },
 ] as const;
 
@@ -210,7 +213,7 @@ function App() {
             aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
             title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
           >
-            {isSidebarCollapsed ? ">" : "<"}
+            <span aria-hidden="true">{isSidebarCollapsed ? "Menu" : "<"}</span>
           </button>
 
           <nav className="sidebar-nav">
@@ -218,9 +221,13 @@ function App() {
               <button
                 key={section.id}
                 type="button"
-                className={`sidebar-link${activeSection === section.id ? " active" : ""}`}
+                className={`sidebar-link nav-rail-item${activeSection === section.id ? " active" : ""}`}
                 onClick={() => openSection(section.id)}
+                aria-current={activeSection === section.id ? "page" : undefined}
               >
+                <span className="nav-rail-indicator" aria-hidden="true">
+                  <span className="nav-rail-icon">{section.icon}</span>
+                </span>
                 <strong>{section.title}</strong>
                 <span>{section.description}</span>
               </button>
