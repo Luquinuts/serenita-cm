@@ -3,8 +3,8 @@ import { ReportPreview } from "../components/ReportPreview";
 import { ReportData } from "../types/report";
 import { createPublication, EMPTY_REPORT, hydrateReportData } from "../utils/reportHelpers";
 import { reportSchema } from "../utils/schema";
+import { sampleReport } from "../utils/sampleReport";
 import { loadReportFromStorage, saveReportToStorage } from "../utils/storage";
-
 import { supabase } from "../lib/supabase";
 
 const API_URL =
