@@ -152,6 +152,17 @@ en Vercel la variable `VITE_API_URL` con la URL publica del backend, por ejemplo
 VITE_API_URL=https://tu-backend.example.com
 ```
 
+Para el modulo de conexiones OAuth con Meta, el backend necesita estas variables:
+
+```text
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...
+META_APP_ID=...
+META_APP_SECRET=...
+META_REDIRECT_URI=https://tu-backend.example.com/api/oauth/meta/callback
+FRONTEND_URL=https://serenita-cm.vercel.app
+```
+
 ## Supabase
 
 La app usa Supabase para inicio de sesión e historial de reportes. En Vercel se usan

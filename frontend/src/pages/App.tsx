@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
+import { ConnectionsSection } from "../sections/ConnectionsSection";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
 import { ReportHistorySection } from "../sections/ReportHistorySection";
 import serenitaLogo from "../assets/serenita-logo.svg";
@@ -21,6 +22,11 @@ const sections = [
     icon: "history",
   },
   {
+    id: "connections",
+    navTitle: "Conexion",
+    icon: "connection",
+  },
+  {
     id: "settings",
     navTitle: "Ajustes",
     icon: "settings",
@@ -33,6 +39,11 @@ type ThemeMode = "dark" | "light";
 
 function resolveStoredSection(value: string | null): AppSection {
   return sections.some((section) => section.id === value) ? (value as AppSection) : "reports";
+}
+
+function resolveInitialSection(): AppSection {
+  const queryView = new URLSearchParams(window.location.search).get("view");
+  return resolveStoredSection(queryView ?? sessionStorage.getItem(VIEW_STORAGE_KEY));
 }
 
 function NavIcon({ name }: { name: NavIconName }) {
@@ -49,6 +60,16 @@ function NavIcon({ name }: { name: NavIconName }) {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5 6.8 15M17.2 9l2.6-1.5" />
         <circle cx="12" cy="12" r="3.5" />
+      </svg>
+    );
+  }
+
+  if (name === "connection") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="5" width="14" height="14" rx="4" />
+        <circle cx="12" cy="12" r="3.2" />
+        <circle cx="16.5" cy="7.5" r="0.7" />
       </svg>
     );
   }
@@ -78,14 +99,14 @@ function App() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      const storedView = resolveStoredSection(sessionStorage.getItem(VIEW_STORAGE_KEY));
+      const storedView = resolveInitialSection();
       setSession(data.session);
       setActiveSection(data.session && storedView ? storedView : "reports");
       setIsAuthLoading(false);
     });
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      const storedView = resolveStoredSection(sessionStorage.getItem(VIEW_STORAGE_KEY));
+      const storedView = resolveInitialSection();
       setSession(nextSession);
       setActiveSection(nextSession && storedView ? storedView : "reports");
       setIsAuthLoading(false);
@@ -261,6 +282,7 @@ function App() {
       <main className="app-main">
         {activeSection === "reports" ? <ReportGeneratorSection userId={session.user.id} /> : null}
         {activeSection === "history" ? <ReportHistorySection userId={session.user.id} /> : null}
+        {activeSection === "connections" ? <ConnectionsSection accessToken={session.access_token} /> : null}
         {activeSection === "settings" ? (
           <section className="panel workspace-content-panel">
             <p className="brand-kicker">Preferencias</p>

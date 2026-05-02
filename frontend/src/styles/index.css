@@ -843,6 +843,98 @@ button {
   padding: 18px;
 }
 
+.connections-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.connection-name-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  padding: 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.connections-list {
+  display: grid;
+  gap: 8px;
+}
+
+.connection-row {
+  min-height: 58px;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) minmax(104px, auto) minmax(86px, auto);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.connection-row strong,
+.connection-row span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.connection-row strong {
+  color: var(--text-strong);
+}
+
+.connection-row span {
+  color: var(--text-soft);
+}
+
+.connection-platform-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--md-sys-color-surface-container-low);
+  color: var(--md-sys-color-on-surface);
+}
+
+.instagram-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.connection-platform,
+.connection-status {
+  justify-self: end;
+  font-size: 0.86rem;
+}
+
+.connection-status {
+  min-width: 76px;
+  padding: 5px 9px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 999px;
+  text-align: center;
+}
+
+.connection-status.activa {
+  color: #50e3c2;
+}
+
+.connection-status.expirada,
+.connection-status.error,
+.connection-status.revoked {
+  color: #ff8c8c;
+}
+
 .settings-list {
   display: grid;
   gap: 14px;
@@ -1607,6 +1699,17 @@ button {
 
   .history-card {
     grid-template-columns: 1fr;
+  }
+
+  .connection-name-form,
+  .connection-row {
+    grid-template-columns: 1fr;
+  }
+
+  .connection-platform-icon,
+  .connection-platform,
+  .connection-status {
+    justify-self: start;
   }
 
   .history-actions,

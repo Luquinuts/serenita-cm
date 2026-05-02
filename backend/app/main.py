@@ -5,6 +5,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.routes.connections import router as connections_router
 from app.routes.report import router as report_router
 
 app = FastAPI(
@@ -37,6 +38,7 @@ app.add_middleware(
 )
 
 app.include_router(report_router)
+app.include_router(connections_router)
 
 
 @app.get("/")

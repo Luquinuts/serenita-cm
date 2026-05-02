@@ -80,3 +80,15 @@ class ReportInput(BaseModel):
                 raise ValueError("Cada sugerencia debe tener hasta 180 caracteres.")
             cleaned.append(normalized)
         return cleaned
+
+
+class ConnectionRenameInput(BaseModel):
+    nombre_conexion: str = Field(..., min_length=1, max_length=80)
+
+    @field_validator("nombre_conexion")
+    @classmethod
+    def validate_nombre_conexion(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("El nombre de la conexion es obligatorio.")
+        return normalized
