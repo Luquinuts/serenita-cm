@@ -7,6 +7,7 @@ import { supabase } from "../lib/supabase";
 
 const VIEW_STORAGE_KEY = "serenita-cm:active-view";
 const THEME_STORAGE_KEY = "serenita-cm:theme";
+const SIDEBAR_STORAGE_KEY = "serenita-cm:sidebar-collapsed";
 
 const sections = [
   {
@@ -41,6 +42,9 @@ function App() {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [activeSection, setActiveSection] = useState<AppSection>("reports");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return localStorage.getItem(SIDEBAR_STORAGE_KEY) === "true";
+  });
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
     return (localStorage.getItem(THEME_STORAGE_KEY) as ThemeMode | null) ?? "dark";
   });
@@ -69,6 +73,10 @@ function App() {
     document.documentElement.dataset.theme = themeMode;
     localStorage.setItem(THEME_STORAGE_KEY, themeMode);
   }, [themeMode]);
+
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isSidebarCollapsed));
+  }, [isSidebarCollapsed]);
 
   const activeSectionData = useMemo(
     () => sections.find((section) => section.id === activeSection) ?? sections[0],
@@ -184,7 +192,7 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell${isSidebarCollapsed ? " sidebar-collapsed" : ""}`}>
       <aside className="app-sidebar panel" aria-label="Navegacion principal">
         <div className="sidebar-main">
           <div className="brand-lockup sidebar-brand">
@@ -194,6 +202,16 @@ function App() {
               <strong>Panel</strong>
             </div>
           </div>
+
+          <button
+            type="button"
+            className="sidebar-toggle"
+            onClick={() => setIsSidebarCollapsed((current) => !current)}
+            aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
+            title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
+          >
+            {isSidebarCollapsed ? ">" : "<"}
+          </button>
 
           <nav className="sidebar-nav">
             {sections.map((section) => (
@@ -213,7 +231,8 @@ function App() {
         <div className="sidebar-footer">
           <p>{session.user.email}</p>
           <button type="button" className="button button-ghost logout-button" onClick={handleLogout}>
-            Cerrar sesion
+            <span className="logout-full-label">Cerrar sesion</span>
+            <span className="logout-short-label">Salir</span>
           </button>
         </div>
       </aside>
