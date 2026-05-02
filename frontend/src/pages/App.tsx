@@ -12,21 +12,24 @@ const SIDEBAR_STORAGE_KEY = "serenita-cm:sidebar-collapsed";
 const sections = [
   {
     id: "reports",
+    navTitle: "Generador",
     title: "Generador de reportes",
     description: "Carga balances, revisa la preview editorial y exporta el PDF final.",
-    icon: "R",
+    icon: "📄",
   },
   {
     id: "history",
+    navTitle: "Historial",
     title: "Historial de reportes",
     description: "Consulta y redescarga los PDFs generados anteriormente.",
-    icon: "H",
+    icon: "⏱️",
   },
   {
     id: "settings",
+    navTitle: "Ajustes",
     title: "Ajustes",
     description: "Personaliza la apariencia de la app.",
-    icon: "A",
+    icon: "⚙️",
   },
 ] as const;
 
@@ -228,7 +231,7 @@ function App() {
                 <span className="nav-rail-indicator" aria-hidden="true">
                   <span className="nav-rail-icon">{section.icon}</span>
                 </span>
-                <strong>{section.title}</strong>
+                <strong>{section.navTitle}</strong>
                 <span>{section.description}</span>
               </button>
             ))}

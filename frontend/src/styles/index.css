@@ -298,7 +298,7 @@ button {
   height: 24px;
   display: grid;
   place-items: center;
-  font-size: 0.76rem;
+  font-size: 1.5rem;
   font-weight: 700;
 }
 
@@ -386,10 +386,16 @@ button {
 
 .sidebar-collapsed .sidebar-link {
   min-height: 64px;
-  padding: 4px 0;
+  padding: 8px 0;
   grid-template-columns: 1fr;
   grid-template-areas: "icon";
   place-items: center;
+  border-radius: 12px;
+}
+
+.sidebar-collapsed .nav-rail-indicator {
+  width: 48px;
+  height: 48px;
 }
 
 
