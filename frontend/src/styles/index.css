@@ -237,7 +237,8 @@ button {
   color: var(--md-sys-color-on-surface-variant);
   display: grid;
   place-items: center;
-  margin-left: auto;
+  margin-right: 0;
+  align-self: flex-start;
   font-weight: 600;
 }
 
@@ -373,6 +374,7 @@ button {
 .sidebar-collapsed .logout-button {
   width: 100%;
   padding-inline: 8px;
+  display: none;
 }
 
 .sidebar-collapsed .brand-logo {

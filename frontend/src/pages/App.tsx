@@ -205,7 +205,6 @@ function App() {
             <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
             <div>
               <p className="brand-kicker">Serenita CM Suite</p>
-              <strong>Panel</strong>
             </div>
           </div>
 
@@ -216,7 +215,7 @@ function App() {
             aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
             title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
           >
-            <span aria-hidden="true">{isSidebarCollapsed ? "☰" : "☰"}</span>
+            <span aria-hidden="true">{isSidebarCollapsed ? "☰" : "✕"}</span>
           </button>
 
           <nav className="sidebar-nav">
@@ -251,7 +250,6 @@ function App() {
           <div>
             <p className="brand-kicker">Modulo activo</p>
             <h2>{activeSectionData.title}</h2>
-            <p>{activeSectionData.description}</p>
           </div>
         </header>
 

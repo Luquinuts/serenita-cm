@@ -4,7 +4,7 @@ import { ReportData } from "../types/report";
 import { createPublication, EMPTY_REPORT, hydrateReportData } from "../utils/reportHelpers";
 import { reportSchema } from "../utils/schema";
 import { loadReportFromStorage, saveReportToStorage } from "../utils/storage";
-import { sampleReport } from "../utils/sampleReport";
+
 import { supabase } from "../lib/supabase";
 
 const API_URL =
@@ -345,12 +345,6 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
     setStatus("Formulario limpio.");
   }
 
-  function loadExample() {
-    setFormData(sampleReport);
-    setErrors({});
-    setStatus("Ejemplo cargado.");
-  }
-
   function downloadJson() {
     const blob = new Blob([JSON.stringify(formData, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -400,9 +394,6 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
         </div>
 
         <div className="toolbar">
-          <button type="button" className="button button-secondary" onClick={loadExample}>
-            Cargar ejemplo
-          </button>
           <button type="button" className="button button-ghost" onClick={clearForm}>
             Limpiar
           </button>
