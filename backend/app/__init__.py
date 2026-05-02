@@ -1,0 +1,1 @@
+"""Serenita CM backend package."""

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Serenita CM</title>
+  </head>
+  <body>
+    <main class="document">
+      <section class="page">
+        <header class="hero">
+          <div class="hero-left">
+            <p class="section-title">Balance de Redes Sociales</p>
+            <h1 class="account">{{ report.cuenta }}</h1>
+          </div>
+          <div class="hero-right">
+            <p class="eyebrow">Período</p>
+            <h2 class="period">{{ report.periodo }}</h2>
+            <div class="pill-row">
+              {% for item in platform_pills %}
+                <span class="pill">{{ item }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </header>
+
+        <div class="divider"></div>
+
+        <p class="section-title">Métricas Generales</p>
+        <div class="metrics-grid">
+          <article class="metric-card accent-green">
+            <p class="eyebrow">Visualizaciones</p>
+            <p class="metric-value">{{ report.datosGenerales.visualizaciones or "—" }}</p>
+            <p class="metric-helper">total del período</p>
+          </article>
+          <article class="metric-card accent-blue">
+            <p class="eyebrow">Interacciones</p>
+            <p class="metric-value">{{ report.datosGenerales.interacciones or "—" }}</p>
+            <p class="metric-helper">likes · comentarios · shares</p>
+          </article>
+          <article class="metric-card accent-gray">
+            <p class="eyebrow">Cuentas alcanzadas</p>
+            <p class="metric-value">{{ report.datosGenerales.cuentasAlcanzadas or "—" }}</p>
+            <p class="metric-helper">personas únicas</p>
+          </article>
+          <article class="metric-card accent-orange">
+            <p class="eyebrow">Nuevos seguidores</p>
+            <p class="metric-value">{{ report.datosGenerales.nuevosSeguidores or "—" }}</p>
+            <p class="metric-helper">crecimiento orgánico</p>
+          </article>
+          <article class="metric-card accent-pink span-two">
+            <p class="eyebrow">Seguidores vs. no seguidores</p>
+            <div class="split-stat">
+              <div>
+                <strong>{{ report.datosGenerales.porcentajeSeguidores or "—" }}</strong>
+                <span>seguidores</span>
+              </div>
+              <div>
+                <strong>{{ report.datosGenerales.porcentajeNoSeguidores or "—" }}</strong>
+                <span>no seguidores</span>
+              </div>
+            </div>
+            {% if report.datosGenerales.variacionCuentasAlcanzadasVsMesAnterior %}
+              <p class="metric-helper">{{ report.datosGenerales.variacionCuentasAlcanzadasVsMesAnterior }}</p>
+            {% endif %}
+          </article>
+        </div>
+
+        {% if top_publicaciones %}
+          <p class="section-title section-space">Top Publicaciones</p>
+          <div class="teaser-grid">
+            {% for publicacion in top_publicaciones %}
+              <article class="teaser-card">
+                <span>{{ "%02d"|format(publicacion.orden) }}</span>
+                <div>
+                  <strong>{{ publicacion.tipo }}</strong>
+                  <p>{{ publicacion.titulo }}</p>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </section>
+
+      <section class="page">
+        {% if top_publicaciones %}
+          <div class="publication-list">
+            {% for publicacion in top_publicaciones %}
+              <article class="publication-card">
+                <div class="publication-order">{{ "%02d"|format(publicacion.orden) }}</div>
+                <div class="publication-body">
+                  <p class="eyebrow">{{ publicacion.tipo }}</p>
+                  <h3 class="publication-title">{{ publicacion.titulo }}</h3>
+                  <div class="publication-metrics metrics-{{ publicacion.metricas|length if publicacion.metricas else 1 }}">
+                    {% if publicacion.metricas %}
+                      {% for metrica in publicacion.metricas %}
+                        <div class="publication-metric accent-{{ ['blue', 'pink', 'orange', 'green', 'lavender'][loop.index0 % 5] }}">
+                          <strong>{{ metrica.valor or "—" }}</strong>
+                          <span>{{ metrica.label or "Métrica" }}</span>
+                        </div>
+                      {% endfor %}
+                    {% else %}
+                      <div class="publication-metric accent-gray">
+                        <strong>—</strong>
+                        <span>Sin métricas</span>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if ubicaciones or edades %}
+          <p class="section-title section-space">Audiencia</p>
+          <div class="audience-grid">
+            {% if ubicaciones %}
+              <article class="info-card">
+                <p class="eyebrow">Ubicaciones</p>
+                <div class="info-list">
+                  {% for item in ubicaciones %}
+                    <div class="info-row">
+                      <span>{{ item.nombre or "Sin ubicación" }}</span>
+                      <strong>{{ item.porcentaje or "—" }}</strong>
+                    </div>
+                  {% endfor %}
+                </div>
+              </article>
+            {% endif %}
+            {% if edades %}
+              <article class="info-card">
+                <p class="eyebrow">Rango etario</p>
+                <div class="info-list">
+                  {% for item in edades %}
+                    <div class="info-row">
+                      <span>{{ item.rango or "Sin rango" }}</span>
+                      <strong>{{ item.porcentaje or "—" }}</strong>
+                    </div>
+                  {% endfor %}
+                </div>
+              </article>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if show_gender %}
+          <p class="section-title section-space">Género</p>
+          <article class="gender-card">
+            <svg class="donut-svg" viewBox="0 0 120 120" aria-label="Distribución de género">
+              <circle cx="60" cy="60" r="44" fill="none" stroke="#dde0db" stroke-width="18"></circle>
+              <circle
+                cx="60"
+                cy="60"
+                r="44"
+                fill="none"
+                stroke="#ea61b2"
+                stroke-width="18"
+                stroke-linecap="round"
+                stroke-dasharray="{{ women_arc }} {{ circumference - women_arc }}"
+                transform="rotate(-90 60 60)"
+              ></circle>
+              <circle
+                cx="60"
+                cy="60"
+                r="44"
+                fill="none"
+                stroke="#5292f7"
+                stroke-width="18"
+                stroke-linecap="round"
+                stroke-dasharray="{{ men_arc }} {{ circumference - men_arc }}"
+                stroke-dashoffset="{{ -women_arc }}"
+                transform="rotate(-90 60 60)"
+              ></circle>
+              <circle cx="60" cy="60" r="25" fill="#f5f5f3"></circle>
+            </svg>
+            <div class="gender-stats">
+              <div>
+                <span>Mujeres</span>
+                <strong class="accent-pink">{{ report.audiencia.genero.mujeres or "—" }}</strong>
+              </div>
+              <div>
+                <span>Hombres</span>
+                <strong class="accent-blue">{{ report.audiencia.genero.hombres or "—" }}</strong>
+              </div>
+            </div>
+          </article>
+        {% endif %}
+      </section>
+
+      <section class="page">
+        <p class="section-title">Insights Adicionales</p>
+        {% if insights %}
+          <div class="insights-grid insights-{{ insights|length }}">
+            {% for insight in insights %}
+              <article class="insight-card">
+                <span class="insight-icon">{{ insight.icon }}</span>
+                <p>{{ insight.text }}</p>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <article class="empty-card">No hay insights cargados para este período.</article>
+        {% endif %}
+
+        <footer class="footer">
+          <span>{{ report.cuenta }}</span>
+          <span>{{ report.periodo }}</span>
+          <span>{{ platform_pills|join(" · ") }}</span>
+          <span>{{ report.datosGenerales.publicaciones or "0" }} publicaciones</span>
+        </footer>
+      </section>
+
+      <section class="page">
+        <p class="section-title">Sugerencias para el Próximo Mes</p>
+        {% if suggestions %}
+          <div class="suggestions-list">
+            {% for suggestion in suggestions %}
+              <article class="suggestion-card">
+                <span class="suggestion-step">{{ "%02d"|format(loop.index) }}</span>
+                <div class="suggestion-body">
+                  <p class="eyebrow">Recomendación</p>
+                  <p>{{ suggestion.text }}</p>
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <article class="empty-card">No hay sugerencias cargadas para el próximo mes.</article>
+        {% endif %}
+
+        <footer class="footer">
+          <span>{{ report.cuenta }}</span>
+          <span>Plan de acción</span>
+          <span>{{ platform_pills|join(" · ") }}</span>
+          <span>{{ suggestions|length }} sugerencias</span>
+        </footer>
+      </section>
+    </main>
+  </body>
+  </html>

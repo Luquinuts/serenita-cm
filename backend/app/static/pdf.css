@@ -1,0 +1,513 @@
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+:root {
+  --bg: #11161d;
+  --bg-panel: #161d26;
+  --line: rgba(220, 226, 237, 0.28);
+  --line-strong: rgba(220, 226, 237, 0.42);
+  --muted: #8390a9;
+  --soft: #ccd3df;
+  --white-soft: #edf2f8;
+  --green: #27c08c;
+  --blue: #71a8ff;
+  --pink: #ff77c0;
+  --orange: #ff8a5b;
+  --lavender: #b9b7ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Montserrat", "Arial", sans-serif;
+  background: var(--bg);
+  color: var(--white-soft);
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 24mm 18mm 18mm;
+  background: var(--bg);
+  page-break-after: always;
+}
+
+.page:last-child {
+  page-break-after: auto;
+}
+
+.hero {
+  display: table;
+  width: 100%;
+}
+
+.hero-left,
+.hero-right {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.hero-right {
+  width: 33%;
+  text-align: right;
+}
+
+.section-title,
+.eyebrow {
+  margin: 0;
+  font-size: 7.5pt;
+  text-transform: uppercase;
+  letter-spacing: 3pt;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.account,
+.period,
+.metric-value,
+.publication-order,
+.publication-metric strong,
+.gender-stats strong {
+  font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
+  letter-spacing: 0.3pt;
+}
+
+.account {
+  margin: 5mm 0 0;
+  font-size: 31pt;
+  line-height: 0.92;
+  text-transform: uppercase;
+  color: var(--white-soft);
+}
+
+.period {
+  margin: 3mm 0 0;
+  font-size: 25pt;
+  text-transform: uppercase;
+  color: var(--white-soft);
+  line-height: 0.95;
+}
+
+.pill-row {
+  margin-top: 6mm;
+}
+
+.pill {
+  display: inline-block;
+  padding: 2.5mm 4.5mm;
+  margin-left: 2mm;
+  border: 0.35mm solid rgba(207, 216, 237, 0.4);
+  border-radius: 999px;
+  color: #d5ddf1;
+  font-size: 7pt;
+  letter-spacing: 1.4pt;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.divider {
+  margin: 13mm 0 18mm;
+  border-top: 0.3mm solid var(--line-strong);
+}
+
+.metrics-grid {
+  font-size: 0;
+}
+
+.metric-card {
+  display: inline-block;
+  width: calc(33.333% - 4mm);
+  min-height: 42mm;
+  margin-right: 4mm;
+  margin-bottom: 4mm;
+  padding: 6mm;
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  vertical-align: top;
+  background: var(--bg-panel);
+}
+
+.metric-card:nth-child(3n) {
+  margin-right: 0;
+}
+
+.metric-card.span-two {
+  width: calc(66.666% - 2mm);
+  margin-right: 0;
+}
+
+.metric-value {
+  margin: 5mm 0 0;
+  font-size: 22pt;
+  line-height: 0.96;
+  color: var(--white-soft);
+}
+
+.metric-helper {
+  margin: 6mm 0 0;
+  color: var(--muted);
+  font-size: 8pt;
+  line-height: 1.5;
+}
+
+.split-stat {
+  margin-top: 7mm;
+}
+
+.split-stat > div {
+  display: inline-block;
+  width: 48%;
+}
+
+.split-stat strong {
+  display: block;
+  font-size: 16pt;
+  color: var(--white-soft);
+}
+
+.split-stat span {
+  display: block;
+  font-size: 8pt;
+  color: var(--muted);
+}
+
+.section-space {
+  margin-top: 10mm;
+}
+
+.teaser-grid {
+  font-size: 0;
+  margin-top: 6mm;
+}
+
+.teaser-card {
+  display: inline-block;
+  width: calc(33.333% - 3mm);
+  min-height: 24mm;
+  margin-right: 4.5mm;
+  padding: 5mm 4.5mm;
+  border: 0.35mm solid rgba(220, 226, 237, 0.14);
+  border-radius: 6mm;
+  vertical-align: top;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.teaser-card:last-child {
+  margin-right: 0;
+}
+
+.teaser-card span,
+.teaser-card div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.teaser-card span {
+  width: 12mm;
+  font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
+  font-size: 17pt;
+  font-weight: 700;
+  color: var(--white-soft);
+}
+
+.teaser-card strong {
+  display: block;
+  margin-bottom: 2mm;
+  color: #c8d0df;
+  font-size: 7pt;
+  text-transform: uppercase;
+  letter-spacing: 1.4pt;
+}
+
+.teaser-card p {
+  width: 42mm;
+  margin: 0;
+  color: var(--muted);
+  font-size: 8.2pt;
+  line-height: 1.45;
+}
+
+.publication-list {
+  margin-bottom: 10mm;
+}
+
+.publication-card {
+  display: table;
+  width: 100%;
+  margin-bottom: 4mm;
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  padding: 6mm 5.5mm;
+  background: var(--bg-panel);
+}
+
+.publication-order,
+.publication-body {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.publication-order {
+  width: 18mm;
+  font-size: 25pt;
+  font-weight: 700;
+  color: var(--white-soft);
+}
+
+.publication-title {
+  margin: 2mm 0 5mm;
+  color: var(--white-soft);
+  font-size: 13pt;
+  line-height: 1;
+}
+
+.publication-metrics {
+  font-size: 0;
+}
+
+.publication-metric {
+  display: inline-block;
+  width: 20%;
+  vertical-align: top;
+}
+
+.metrics-1 .publication-metric {
+  width: 100%;
+}
+
+.metrics-2 .publication-metric {
+  width: 50%;
+}
+
+.metrics-3 .publication-metric {
+  width: 33.333%;
+}
+
+.metrics-4 .publication-metric {
+  width: 25%;
+}
+
+.publication-metric strong {
+  display: block;
+  font-size: 15pt;
+  line-height: 1;
+}
+
+.publication-metric span {
+  display: block;
+  margin-top: 2mm;
+  color: var(--muted);
+  font-size: 6.8pt;
+  letter-spacing: 1.2pt;
+  text-transform: uppercase;
+}
+
+.audience-grid {
+  font-size: 0;
+}
+
+.info-card {
+  display: inline-block;
+  width: calc(50% - 2mm);
+  min-height: 58mm;
+  padding: 6mm;
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  vertical-align: top;
+  background: var(--bg-panel);
+}
+
+.info-card:first-child {
+  margin-right: 4mm;
+}
+
+.info-list {
+  margin-top: 8mm;
+}
+
+.info-row {
+  margin-bottom: 6mm;
+}
+
+.info-row span,
+.info-row strong {
+  display: inline-block;
+  width: 49%;
+  font-size: 9pt;
+}
+
+.info-row span {
+  color: var(--muted);
+}
+
+.info-row strong {
+  text-align: right;
+  color: var(--white-soft);
+}
+
+.gender-card {
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  padding: 7mm;
+  background: var(--bg-panel);
+}
+
+.donut-svg,
+.gender-stats {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.donut-svg {
+  width: 32mm;
+  height: 32mm;
+  margin-right: 16mm;
+}
+
+.gender-stats span {
+  display: block;
+  color: var(--muted);
+  font-size: 9pt;
+  margin-bottom: 1.2mm;
+}
+
+.gender-stats strong {
+  display: block;
+  margin-bottom: 4mm;
+  font-size: 16pt;
+}
+
+.insights-grid {
+  font-size: 0;
+  margin-top: 8mm;
+}
+
+.insight-card,
+.suggestion-card,
+.empty-card {
+  display: inline-block;
+  width: calc(50% - 2mm);
+  min-height: 36mm;
+  padding: 6mm;
+  margin-bottom: 4mm;
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  vertical-align: top;
+  background: var(--bg-panel);
+}
+
+.insight-card:nth-child(odd) {
+  margin-right: 4mm;
+}
+
+.insight-icon {
+  display: inline-block;
+  width: 8mm;
+  font-size: 11pt;
+  color: var(--white-soft);
+  vertical-align: top;
+}
+
+.insight-card p {
+  display: inline-block;
+  width: calc(100% - 10mm);
+  margin: 0;
+  color: #b2bccf;
+  font-size: 9.2pt;
+  line-height: 1.7;
+}
+
+.empty-card {
+  width: 100%;
+  color: #98a1b1;
+  font-size: 10pt;
+}
+
+.footer {
+  margin-top: 18mm;
+  padding-top: 5mm;
+  border-top: 0.3mm solid var(--line-strong);
+}
+
+.footer span {
+  display: inline-block;
+  width: 24.5%;
+  color: #b8c2d6;
+  font-size: 8pt;
+}
+
+.suggestions-list {
+  margin-top: 8mm;
+}
+
+.suggestion-card {
+  display: table;
+  width: 100%;
+  min-height: 28mm;
+  margin-bottom: 4mm;
+  padding: 6mm;
+  border: 0.35mm solid var(--line);
+  border-radius: 7mm;
+  background: var(--bg-panel);
+}
+
+.suggestion-step,
+.suggestion-body {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.suggestion-step {
+  width: 16mm;
+  font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--white-soft);
+}
+
+.suggestion-body p:last-child {
+  margin: 2mm 0 0;
+  color: #b7c0d1;
+  font-size: 9.5pt;
+  line-height: 1.75;
+}
+
+.accent-green,
+.accent-green .metric-value,
+.accent-green strong {
+  color: var(--green);
+}
+
+.accent-blue,
+.accent-blue .metric-value,
+.accent-blue strong {
+  color: var(--blue);
+}
+
+.accent-pink,
+.accent-pink .metric-value,
+.accent-pink strong {
+  color: var(--pink);
+}
+
+.accent-orange,
+.accent-orange .metric-value,
+.accent-orange strong {
+  color: var(--orange);
+}
+
+.accent-gray,
+.accent-gray .metric-value,
+.accent-gray strong {
+  color: #8c9199;
+}
+
+.accent-lavender,
+.accent-lavender strong {
+  color: var(--lavender);
+}
