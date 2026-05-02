@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
 import { ReportHistorySection } from "../sections/ReportHistorySection";
@@ -13,31 +13,52 @@ const sections = [
   {
     id: "reports",
     navTitle: "Generador",
-    title: "Generador de reportes",
-    description: "Carga balances, revisa la preview editorial y exporta el PDF final.",
-    icon: "📄",
+    icon: "report",
   },
   {
     id: "history",
     navTitle: "Historial",
-    title: "Historial de reportes",
-    description: "Consulta y redescarga los PDFs generados anteriormente.",
-    icon: "⏱️",
+    icon: "history",
   },
   {
     id: "settings",
     navTitle: "Ajustes",
-    title: "Ajustes",
-    description: "Personaliza la apariencia de la app.",
-    icon: "⚙️",
+    icon: "settings",
   },
 ] as const;
 
 type AppSection = (typeof sections)[number]["id"];
+type NavIconName = (typeof sections)[number]["icon"];
 type ThemeMode = "dark" | "light";
 
 function resolveStoredSection(value: string | null): AppSection {
   return sections.some((section) => section.id === value) ? (value as AppSection) : "reports";
+}
+
+function NavIcon({ name }: { name: NavIconName }) {
+  if (name === "history") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h10" />
+      </svg>
+    );
+  }
+
+  if (name === "settings") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5 6.8 15M17.2 9l2.6-1.5" />
+        <circle cx="12" cy="12" r="3.5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 3h7l4 4v14H7z" />
+      <path d="M14 3v5h4M10 13h5M10 17h5" />
+    </svg>
+  );
 }
 
 function App() {
@@ -84,11 +105,6 @@ function App() {
     localStorage.setItem(SIDEBAR_STORAGE_KEY, String(isSidebarCollapsed));
   }, [isSidebarCollapsed]);
 
-  const activeSectionData = useMemo(
-    () => sections.find((section) => section.id === activeSection) ?? sections[0],
-    [activeSection],
-  );
-
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoggingIn(true);
@@ -131,7 +147,7 @@ function App() {
           <div className="brand-lockup">
             <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
             <div>
-              <p className="brand-kicker">Serenita CM Suite</p>
+              <p className="brand-kicker">Serenita CM</p>
               <h1>Preparando tu espacio</h1>
             </div>
           </div>
@@ -148,13 +164,11 @@ function App() {
             <div className="brand-lockup">
               <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
               <div>
-                <p className="brand-kicker">Serenita CM Suite</p>
+                <p className="brand-kicker">Serenita CM</p>
                 <h1>Acceso centralizado para el equipo</h1>
               </div>
             </div>
-            <p>
-              Ingresa con tu email y contrasena para entrar al panel, generar reportes y consultar tu historial.
-            </p>
+            <p>Ingresa con tu email y contrasena para entrar al panel, generar reportes y consultar tu historial.</p>
           </div>
 
           <form className="login-form" onSubmit={handleLogin}>
@@ -201,22 +215,24 @@ function App() {
     <div className={`app-shell${isSidebarCollapsed ? " sidebar-collapsed" : ""}`}>
       <aside className="app-sidebar panel" aria-label="Navegacion principal">
         <div className="sidebar-main">
-          <div className="brand-lockup sidebar-brand">
-            <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
-            <div>
-              <p className="brand-kicker">Serenita CM Suite</p>
+          <div className="sidebar-topbar">
+            <div className="brand-lockup sidebar-brand">
+              <img src={serenitaLogo} alt="Serenita CM" className="brand-logo" />
+              <div>
+                <strong>serenita-cm</strong>
+              </div>
             </div>
-          </div>
 
-          <button
-            type="button"
-            className="sidebar-toggle"
-            onClick={() => setIsSidebarCollapsed((current) => !current)}
-            aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
-            title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
-          >
-            <span aria-hidden="true">{isSidebarCollapsed ? "☰" : "✕"}</span>
-          </button>
+            <button
+              type="button"
+              className="sidebar-toggle"
+              onClick={() => setIsSidebarCollapsed((current) => !current)}
+              aria-label={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
+              title={isSidebarCollapsed ? "Desplegar sidebar" : "Contraer sidebar"}
+            >
+              <span aria-hidden="true">{isSidebarCollapsed ? ">" : "<"}</span>
+            </button>
+          </div>
 
           <nav className="sidebar-nav">
             {sections.map((section) => (
@@ -228,7 +244,9 @@ function App() {
                 aria-current={activeSection === section.id ? "page" : undefined}
               >
                 <span className="nav-rail-indicator" aria-hidden="true">
-                  <span className="nav-rail-icon">{section.icon}</span>
+                  <span className="nav-rail-icon">
+                    <NavIcon name={section.icon} />
+                  </span>
                 </span>
                 <strong>{section.navTitle}</strong>
               </button>
@@ -240,19 +258,12 @@ function App() {
           <p>{session.user.email}</p>
           <button type="button" className="button button-ghost logout-button" onClick={handleLogout}>
             <span className="logout-full-label">Cerrar sesion</span>
-            <span className="logout-short-label">🚪</span>
+            <span className="logout-short-label">Salir</span>
           </button>
         </div>
       </aside>
 
       <main className="app-main">
-        <header className="workspace-header panel report-page-header">
-          <div>
-            <p className="brand-kicker">Modulo activo</p>
-            <h2>{activeSectionData.title}</h2>
-          </div>
-        </header>
-
         {activeSection === "reports" ? <ReportGeneratorSection userId={session.user.id} /> : null}
         {activeSection === "history" ? <ReportHistorySection userId={session.user.id} /> : null}
         {activeSection === "settings" ? (

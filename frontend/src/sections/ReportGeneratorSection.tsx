@@ -388,7 +388,6 @@ export function ReportGeneratorSection({ userId }: ReportGeneratorSectionProps) 
     <div className="generator-layout">
       <aside className="panel panel-form">
         <div className="brand-block">
-          <p className="brand-kicker">Modulo activo</p>
           <h1>Generador editorial de balances mensuales</h1>
           <p>Carga datos, ajusta el contenido y exporta un PDF listo para presentar.</p>
         </div>
