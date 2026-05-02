@@ -131,6 +131,27 @@ cd backend
 pytest
 ```
 
+## Deploy en Vercel
+
+El repo es un monorepo: la app web vive en `frontend/` y el backend vive en `backend/`.
+Para que Vercel no publique la raiz vacia del proyecto, este repo incluye `vercel.json`
+con estos valores:
+
+- Install Command: `cd frontend && npm ci`
+- Build Command: `cd frontend && npm run build`
+- Output Directory: `frontend/dist`
+
+Despues de pushear cambios a GitHub, redeploya el proyecto en Vercel. Si el proyecto fue
+creado antes de agregar `vercel.json`, tambien podes revisar en Vercel que no haya un
+Root Directory manual apuntando a otra carpeta.
+
+Para generar PDF en produccion hace falta desplegar el backend por separado y configurar
+en Vercel la variable `VITE_API_URL` con la URL publica del backend, por ejemplo:
+
+```text
+VITE_API_URL=https://tu-backend.example.com
+```
+
 ## Dataset inicial
 
 El ejemplo base está en [shared/sample-report.json](shared/sample-report.json).
