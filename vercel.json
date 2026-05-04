@@ -5,17 +5,8 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
-<<<<<<< HEAD
     "source": "/((?!api/|static/|.*\\..*).*)",
     "destination": "/index.html"
-=======
-      "source": "/politicas",
-      "destination": "/politicas.html"
-    },
-    {
-      "source": "/((?!api/|static/|.*\\..*).*)",
-      "destination": "/index.html"
->>>>>>> a3deb0c (fix: allow facebook crawler and expose static /politicas page for Meta review)
     }
   ]
 }
