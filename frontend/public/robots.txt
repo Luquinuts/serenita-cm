@@ -1,0 +1,7 @@
+# Allow Facebook external hit crawler to index the policy page used for Meta app review
+User-agent: facebookexternalhit
+Allow: /
+
+# Allow all other crawlers
+User-agent: *
+Allow: /

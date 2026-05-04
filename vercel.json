@@ -5,7 +5,11 @@
   "outputDirectory": "frontend/dist",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/politicas",
+      "destination": "/politicas.html"
+    },
+    {
+      "source": "/((?!api/|static/|.*\\..*).*)",
       "destination": "/index.html"
     }
   ]
