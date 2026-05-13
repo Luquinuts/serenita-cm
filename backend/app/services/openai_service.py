@@ -17,13 +17,23 @@ def gemini_model() -> str:
 
 
 def ai_max_output_tokens() -> int:
-    raw_value = get_env("AI_MAX_OUTPUT_TOKENS", "4000") or "4000"
+    raw_value = get_env("AI_MAX_OUTPUT_TOKENS", "8000") or "8000"
     try:
         value = int(raw_value)
     except ValueError:
-        return 4000
+        return 8000
 
-    return max(256, min(value, 8000))
+    return max(256, min(value, 16000))
+
+
+def gemini_thinking_budget() -> int:
+    raw_value = get_env("GEMINI_THINKING_BUDGET", "0") or "0"
+    try:
+        value = int(raw_value)
+    except ValueError:
+        return 0
+
+    return max(-1, min(value, 24576))
 
 
 def is_openai_configured() -> bool:
@@ -192,6 +202,9 @@ async def generate_gemini_answer(prompt: str) -> dict[str, str]:
         ],
         "generationConfig": {
             "maxOutputTokens": ai_max_output_tokens(),
+            "thinkingConfig": {
+                "thinkingBudget": gemini_thinking_budget(),
+            },
         },
     }
 
