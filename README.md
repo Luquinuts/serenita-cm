@@ -175,10 +175,12 @@ OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4o-mini
 GEMINI_API_KEY=...
 GEMINI_MODEL=gemini-2.5-flash
+AI_MAX_OUTPUT_TOKENS=4000
 ```
 
-`OPENAI_MODEL` y `GEMINI_MODEL` son opcionales. Las claves de IA deben configurarse
-solo en el backend de Render, nunca en Vercel ni con prefijo `VITE_`.
+`OPENAI_MODEL`, `GEMINI_MODEL` y `AI_MAX_OUTPUT_TOKENS` son opcionales. Las claves de
+IA deben configurarse solo en el backend de Render, nunca en Vercel ni con prefijo
+`VITE_`.
 
 ## Supabase
 

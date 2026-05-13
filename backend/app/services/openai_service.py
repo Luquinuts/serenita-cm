@@ -16,6 +16,16 @@ def gemini_model() -> str:
     return get_env("GEMINI_MODEL", "gemini-2.5-flash") or "gemini-2.5-flash"
 
 
+def ai_max_output_tokens() -> int:
+    raw_value = get_env("AI_MAX_OUTPUT_TOKENS", "4000") or "4000"
+    try:
+        value = int(raw_value)
+    except ValueError:
+        return 4000
+
+    return max(256, min(value, 8000))
+
+
 def is_openai_configured() -> bool:
     return bool(get_env("OPENAI_API_KEY"))
 
@@ -136,7 +146,7 @@ async def generate_openai_answer(prompt: str) -> dict[str, str]:
             "Sos un asistente de Serenita CM para consultas de marketing, redes sociales "
             "y gestion de reportes. Responde en espanol claro, con pasos accionables cuando aporte valor."
         ),
-        "max_output_tokens": 900,
+        "max_output_tokens": ai_max_output_tokens(),
     }
 
     async with httpx.AsyncClient(timeout=45) as client:
@@ -181,7 +191,7 @@ async def generate_gemini_answer(prompt: str) -> dict[str, str]:
             }
         ],
         "generationConfig": {
-            "maxOutputTokens": 900,
+            "maxOutputTokens": ai_max_output_tokens(),
         },
     }
 
