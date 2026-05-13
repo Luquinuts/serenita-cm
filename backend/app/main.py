@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes.ai import router as ai_router
+from app.routes.calendars import router as calendars_router
 from app.routes.connections import router as connections_router
 from app.routes.report import router as report_router
 
@@ -41,6 +42,7 @@ app.add_middleware(
 app.include_router(report_router)
 app.include_router(connections_router)
 app.include_router(ai_router)
+app.include_router(calendars_router)
 
 
 @app.get("/")

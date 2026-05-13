@@ -46,3 +46,29 @@ export const reportSchema = z.object({
 });
 
 export type ReportSchema = z.infer<typeof reportSchema>;
+
+export const calendarSchema = z.object({
+  name: z.string().trim().min(1, "Ingresá un nombre").max(120, "Máximo 120 caracteres"),
+  description: z.string().trim().max(800, "Máximo 800 caracteres").optional().default(""),
+  month: z.number().int().min(1).max(12),
+  year: z.number().int().min(2020).max(2100),
+  status: z.enum(["draft", "active", "archived"]),
+  metadata: z.record(z.unknown()).optional().default({}),
+});
+
+export const calendarItemSchema = z.object({
+  scheduled_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Ingresá una fecha válida"),
+  content_type: z.enum(["reel", "carousel", "story", "content_creation"]),
+  title: z.string().trim().min(1, "Ingresá un título").max(160, "Máximo 160 caracteres"),
+  description: z.string().trim().max(1200, "Máximo 1200 caracteres").optional().default(""),
+  objective: z.string().trim().max(500, "Máximo 500 caracteres").optional().default(""),
+  status: z.enum(["pendiente", "en_progreso", "aprobado", "publicado"]),
+  priority: z.enum(["low", "medium", "high", "urgent"]),
+  observations: z.string().trim().max(1000, "Máximo 1000 caracteres").optional().default(""),
+  color_tag: z.string().regex(/^#[0-9A-Fa-f]{6}$/, "Usá un color hexadecimal").optional().or(z.literal("")),
+  position_in_day: z.number().int().min(0),
+  metadata: z.record(z.unknown()).optional().default({}),
+});
+
+export type CalendarSchema = z.infer<typeof calendarSchema>;
+export type CalendarItemSchema = z.infer<typeof calendarItemSchema>;

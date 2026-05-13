@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import List, Literal
+from datetime import date
+from typing import Any, List, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -111,3 +112,76 @@ class AiQueryOutput(BaseModel):
     answer: str
     model: str
     provider: Literal["openai", "gemini"]
+
+
+CalendarStatus = Literal["draft", "active", "archived"]
+ContentType = Literal["reel", "carousel", "story", "content_creation"]
+ContentItemStatus = Literal["pendiente", "en_progreso", "aprobado", "publicado"]
+ContentItemPriority = Literal["low", "medium", "high", "urgent"]
+
+
+class CalendarCreateInput(BaseModel):
+    organization_id: str | None = None
+    name: str = Field(..., min_length=1, max_length=120)
+    description: str | None = Field(default=None, max_length=800)
+    month: int = Field(..., ge=1, le=12)
+    year: int = Field(..., ge=2020, le=2100)
+    status: CalendarStatus = "draft"
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("name")
+    @classmethod
+    def validate_calendar_name(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("El nombre del calendario es obligatorio.")
+        return normalized
+
+
+class CalendarUpdateInput(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=120)
+    description: str | None = Field(default=None, max_length=800)
+    month: int | None = Field(default=None, ge=1, le=12)
+    year: int | None = Field(default=None, ge=2020, le=2100)
+    status: CalendarStatus | None = None
+    metadata: dict[str, Any] | None = None
+
+
+class CalendarItemCreateInput(BaseModel):
+    scheduled_date: date
+    content_type: ContentType
+    title: str = Field(..., min_length=1, max_length=160)
+    description: str | None = Field(default=None, max_length=1200)
+    objective: str | None = Field(default=None, max_length=500)
+    status: ContentItemStatus = "pendiente"
+    priority: ContentItemPriority = "medium"
+    observations: str | None = Field(default=None, max_length=1000)
+    color_tag: str | None = Field(default=None, pattern=r"^#[0-9A-Fa-f]{6}$")
+    position_in_day: int = Field(default=0, ge=0)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+    @field_validator("title")
+    @classmethod
+    def validate_item_title(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("El titulo del item es obligatorio.")
+        return normalized
+
+
+class CalendarItemUpdateInput(BaseModel):
+    scheduled_date: date | None = None
+    content_type: ContentType | None = None
+    title: str | None = Field(default=None, min_length=1, max_length=160)
+    description: str | None = Field(default=None, max_length=1200)
+    objective: str | None = Field(default=None, max_length=500)
+    status: ContentItemStatus | None = None
+    priority: ContentItemPriority | None = None
+    observations: str | None = Field(default=None, max_length=1000)
+    color_tag: str | None = Field(default=None, pattern=r"^#[0-9A-Fa-f]{6}$")
+    position_in_day: int | None = Field(default=None, ge=0)
+    metadata: dict[str, Any] | None = None
+
+
+class CalendarItemReorderInput(BaseModel):
+    item_ids: list[str] = Field(..., min_length=1, max_length=100)

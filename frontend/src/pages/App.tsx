@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
 import { AiAssistantSection } from "../sections/AiAssistantSection";
+import { CalendarSection } from "../modules/calendars/components/CalendarSection";
 import { ConnectionsSection } from "../sections/ConnectionsSection";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
 import { ReportHistorySection } from "../sections/ReportHistorySection";
@@ -21,6 +22,11 @@ const sections = [
     id: "history",
     navTitle: "Historial",
     icon: "history",
+  },
+  {
+    id: "calendar",
+    navTitle: "Calendario",
+    icon: "calendar",
   },
   {
     id: "connections",
@@ -66,6 +72,15 @@ function NavIcon({ name }: { name: NavIconName }) {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5 6.8 15M17.2 9l2.6-1.5" />
         <circle cx="12" cy="12" r="3.5" />
+      </svg>
+    );
+  }
+
+  if (name === "calendar") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="4" y="5" width="16" height="15" rx="3" />
+        <path d="M8 3v4M16 3v4M4 10h16" />
       </svg>
     );
   }
@@ -443,6 +458,7 @@ function App() {
       <main className="app-main">
         {activeSection === "reports" ? <ReportGeneratorSection userId={session.user.id} /> : null}
         {activeSection === "history" ? <ReportHistorySection userId={session.user.id} /> : null}
+        {activeSection === "calendar" ? <CalendarSection accessToken={session.access_token} /> : null}
         {activeSection === "connections" ? <ConnectionsSection accessToken={session.access_token} /> : null}
         {activeSection === "ai" ? <AiAssistantSection accessToken={session.access_token} /> : null}
         {activeSection === "settings" ? (

@@ -85,3 +85,14 @@ async def update_record(table: str, query: str, payload: dict[str, Any]) -> dict
     if isinstance(data, list) and data:
         return data[0]
     return None
+
+
+async def delete_records(table: str, query: str) -> None:
+    async with httpx.AsyncClient(timeout=20) as client:
+        response = await client.delete(
+            f"{supabase_url()}/rest/v1/{table}?{query}",
+            headers=_supabase_headers(),
+        )
+
+    if response.status_code >= 400:
+        raise HTTPException(status_code=500, detail=f"No se pudo eliminar en {table}.")
