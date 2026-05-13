@@ -15,6 +15,12 @@ type SocialConnection = {
 };
 
 type AiStatus = {
+  providers: Record<AiProvider, AiProviderStatus>;
+};
+
+type AiProvider = "openai" | "gemini";
+
+type AiProviderStatus = {
   configured: boolean;
   model: string;
 };
@@ -38,6 +44,15 @@ function OpenAiIcon() {
     <svg className="openai-icon" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
       <path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z" />
+    </svg>
+  );
+}
+
+function GeminiIcon() {
+  return (
+    <svg className="openai-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 4l1.4 4.1L17.5 9.5l-4.1 1.4L12 15l-1.4-4.1-4.1-1.4 4.1-1.4z" />
+      <path d="M17.5 14l.9 2.6L21 17.5l-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z" />
     </svg>
   );
 }
@@ -217,11 +232,25 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
           </div>
           <div>
             <strong>OpenAI</strong>
-            <span>{aiStatus?.model ?? "Configurar OPENAI_API_KEY en Render"}</span>
+            <span>{aiStatus?.providers?.openai?.model ?? "Configurar OPENAI_API_KEY en Render"}</span>
           </div>
           <span className="connection-platform">IA</span>
-          <span className={`connection-status ${aiStatus?.configured ? "activa" : "error"}`}>
-            {aiStatus?.configured ? "activa" : "sin configurar"}
+          <span className={`connection-status ${aiStatus?.providers?.openai?.configured ? "activa" : "error"}`}>
+            {aiStatus?.providers?.openai?.configured ? "activa" : "sin configurar"}
+          </span>
+        </article>
+
+        <article className="connection-row">
+          <div className="connection-platform-icon">
+            <GeminiIcon />
+          </div>
+          <div>
+            <strong>Gemini</strong>
+            <span>{aiStatus?.providers?.gemini?.model ?? "Configurar GEMINI_API_KEY en Render"}</span>
+          </div>
+          <span className="connection-platform">IA</span>
+          <span className={`connection-status ${aiStatus?.providers?.gemini?.configured ? "activa" : "error"}`}>
+            {aiStatus?.providers?.gemini?.configured ? "activa" : "sin configurar"}
           </span>
         </article>
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import List, Literal
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -96,6 +96,7 @@ class ConnectionRenameInput(BaseModel):
 
 class AiQueryInput(BaseModel):
     prompt: str = Field(..., min_length=1, max_length=4000)
+    provider: Literal["openai", "gemini"] = "openai"
 
     @field_validator("prompt")
     @classmethod
@@ -109,3 +110,4 @@ class AiQueryInput(BaseModel):
 class AiQueryOutput(BaseModel):
     answer: str
     model: str
+    provider: Literal["openai", "gemini"]

@@ -173,10 +173,12 @@ Para habilitar la seccion de IA, el backend tambien necesita una API key de Open
 ```text
 OPENAI_API_KEY=sk-...
 OPENAI_MODEL=gpt-4o-mini
+GEMINI_API_KEY=...
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
-`OPENAI_MODEL` es opcional. La clave de OpenAI debe configurarse solo en el backend
-de Render, nunca en Vercel ni con prefijo `VITE_`.
+`OPENAI_MODEL` y `GEMINI_MODEL` son opcionales. Las claves de IA deben configurarse
+solo en el backend de Render, nunca en Vercel ni con prefijo `VITE_`.
 
 ## Supabase
 

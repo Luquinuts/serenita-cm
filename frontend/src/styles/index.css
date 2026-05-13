@@ -965,6 +965,16 @@ button {
   justify-self: flex-start;
 }
 
+.ai-provider-control {
+  justify-self: flex-start;
+}
+
+.ai-provider-meta {
+  margin: -2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
 .ai-answer {
   display: grid;
   gap: 10px;
