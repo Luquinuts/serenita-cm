@@ -638,7 +638,7 @@ button {
 .section-title,
 .eyebrow {
   margin: 0 0 10px;
-  font-size: 0.78rem;
+  font-size: 1.5rem;
   letter-spacing: 0;
   color: var(--md-sys-color-on-surface-variant);
   font-weight: 600;
