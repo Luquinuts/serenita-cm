@@ -321,7 +321,7 @@ function App() {
             <div className="brand-lockup">
               <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
               <div>
-                <p className="brand-kicker">Serenita CM</p>
+                <h1 className="brand-kicker">Serenita CM</h1>
               </div>
             </div>
             
