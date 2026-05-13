@@ -322,10 +322,9 @@ function App() {
               <img src={serenitaLogo} alt="Serenita CM" className="brand-logo brand-logo-large" />
               <div>
                 <p className="brand-kicker">Serenita CM</p>
-                <h1>Acceso centralizado para el equipo</h1>
               </div>
             </div>
-            <p>Ingresa con tu email y contrasena para entrar al panel, generar reportes y consultar tu historial.</p>
+            
           </div>
 
           <form className="login-form" onSubmit={handleLogin}>
