@@ -38,16 +38,19 @@ def _extract_text(response_data: dict[str, Any]) -> str:
 
 
 def _openai_error_detail(response: httpx.Response) -> str:
-    fallback = "OpenAI no pudo procesar la consulta."
+    fallback = f"OpenAI no pudo procesar la consulta. Status {response.status_code}."
 
     try:
         data = response.json()
     except ValueError:
+        body = response.text.strip().replace("\n", " ")
+        if body:
+            return f"{fallback} Respuesta: {body[:300]}"
         return fallback
 
     error = data.get("error")
     if not isinstance(error, dict):
-        return fallback
+        return f"{fallback} Respuesta: {str(data)[:300]}"
 
     message = error.get("message")
     code = error.get("code")
