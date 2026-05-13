@@ -8,10 +8,19 @@ from urllib.parse import urlencode
 import httpx
 from fastapi import HTTPException
 
-from app.config import frontend_url, meta_graph_version, require_env
+from app.config import frontend_url, get_env, meta_graph_version, require_env
 from app.services.supabase_service import insert_record, select_records, update_record
 
-DEFAULT_SCOPES = ["instagram_basic", "pages_show_list"]
+DEFAULT_SCOPES = ["public_profile"]
+
+
+def meta_oauth_scopes() -> list[str]:
+    raw_scopes = get_env("META_OAUTH_SCOPES")
+    if not raw_scopes:
+        return DEFAULT_SCOPES
+
+    scopes = [scope.strip() for scope in raw_scopes.split(",") if scope.strip()]
+    return scopes or DEFAULT_SCOPES
 
 
 def _oauth_redirect_uri() -> str:
@@ -40,7 +49,7 @@ async def create_oauth_authorization_url(user_id: str) -> str:
         "redirect_uri": _oauth_redirect_uri(),
         "state": state,
         "response_type": "code",
-        "scope": ",".join(DEFAULT_SCOPES),
+        "scope": ",".join(meta_oauth_scopes()),
     }
     return f"https://www.facebook.com/{meta_graph_version()}/dialog/oauth?{urlencode(params)}"
 
@@ -116,7 +125,7 @@ async def save_social_connection(user_id: str, token_data: dict[str, Any], profi
         "access_token": token_data["access_token"],
         "refresh_token": token_data.get("refresh_token"),
         "token_expiration": token_expiration,
-        "scopes": DEFAULT_SCOPES,
+        "scopes": meta_oauth_scopes(),
         "status": "active",
         "metadata": {"provider": "meta"},
     }

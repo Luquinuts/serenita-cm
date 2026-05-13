@@ -160,8 +160,13 @@ SUPABASE_SERVICE_ROLE_KEY=...
 META_APP_ID=...
 META_APP_SECRET=...
 META_REDIRECT_URI=https://tu-backend.example.com/api/oauth/meta/callback
+META_OAUTH_SCOPES=public_profile
 FRONTEND_URL=https://serenita-cm.vercel.app
 ```
+
+`META_OAUTH_SCOPES` es opcional. Para una primera prueba de OAuth usa `public_profile`.
+Cuando la app de Meta tenga configurados y aprobados los permisos de Instagram, podes
+cambiarlo en el backend por una lista separada por comas.
 
 ## Supabase
 
