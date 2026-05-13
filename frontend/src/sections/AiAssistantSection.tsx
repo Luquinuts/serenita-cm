@@ -90,7 +90,6 @@ export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
     <section className="panel workspace-content-panel ai-panel">
       <div className="section-heading">
         <div>
-          <p className="brand-kicker">OpenAI</p>
           <h1 className="workspace-title">IA</h1>
           <p className="workspace-copy">Realiza consultas y prepara ideas para reportes, contenido y analisis.</p>
         </div>

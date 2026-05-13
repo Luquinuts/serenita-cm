@@ -183,9 +183,8 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
     <section className="panel workspace-content-panel connections-panel">
       <div className="section-heading">
         <div>
-          <p className="brand-kicker">Meta OAuth</p>
           <h1 className="workspace-title">Conexion</h1>
-          <p className="workspace-copy">Administra las cuentas de Instagram conectadas a tu usuario.</p>
+          <p className="workspace-copy">Administra las cuentas conectadas a tu usuario.</p>
         </div>
         <button type="button" className="button button-primary" onClick={startConnection} disabled={isConnecting}>
           {isConnecting ? "Conectando..." : "Agregar conexion"}
