@@ -24,6 +24,26 @@ type AiAssistantSectionProps = {
   accessToken: string;
 };
 
+function normalizeAiStatus(data: unknown): AiStatus {
+  if (data && typeof data === "object" && "providers" in data) {
+    return data as AiStatus;
+  }
+
+  const legacyStatus = data as { configured?: boolean; model?: string };
+  return {
+    providers: {
+      openai: {
+        configured: Boolean(legacyStatus?.configured),
+        model: legacyStatus?.model ?? "gpt-4o-mini",
+      },
+      gemini: {
+        configured: false,
+        model: "gemini-2.5-flash",
+      },
+    },
+  };
+}
+
 export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
   const [prompt, setPrompt] = useState("");
   const [answer, setAnswer] = useState("");
@@ -54,7 +74,7 @@ export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
         throw new Error("No se pudo verificar la conexion con IA.");
       }
 
-      setAiStatus((await response.json()) as AiStatus);
+      setAiStatus(normalizeAiStatus(await response.json()));
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No se pudo verificar la conexion con IA.");
     }
@@ -84,7 +104,7 @@ export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
 
       const data = (await response.json()) as AiResponse;
       setAnswer(data.answer);
-      setStatus(`Respuesta generada con ${providerLabel(data.provider)} (${data.model}).`);
+      setStatus(`Respuesta generada con ${providerLabel(data.provider ?? provider)} (${data.model}).`);
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No se pudo completar la consulta.");
     } finally {
@@ -92,7 +112,7 @@ export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
     }
   }
 
-  const selectedProvider = aiStatus?.providers[provider];
+  const selectedProvider = aiStatus?.providers?.[provider];
   const isConfigured = selectedProvider?.configured ?? false;
 
   function providerLabel(value: AiProvider) {

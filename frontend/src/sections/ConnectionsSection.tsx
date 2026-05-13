@@ -29,6 +29,26 @@ type ConnectionsSectionProps = {
   accessToken: string;
 };
 
+function normalizeAiStatus(data: unknown): AiStatus {
+  if (data && typeof data === "object" && "providers" in data) {
+    return data as AiStatus;
+  }
+
+  const legacyStatus = data as { configured?: boolean; model?: string };
+  return {
+    providers: {
+      openai: {
+        configured: Boolean(legacyStatus?.configured),
+        model: legacyStatus?.model ?? "gpt-4o-mini",
+      },
+      gemini: {
+        configured: false,
+        model: "gemini-2.5-flash",
+      },
+    },
+  };
+}
+
 function InstagramIcon() {
   return (
     <svg className="instagram-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -139,7 +159,7 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
         throw new Error("No se pudo verificar OpenAI.");
       }
 
-      setAiStatus((await response.json()) as AiStatus);
+      setAiStatus(normalizeAiStatus(await response.json()));
     } catch {
       setAiStatus(null);
     }
