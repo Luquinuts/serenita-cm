@@ -168,6 +168,16 @@ FRONTEND_URL=https://serenita-cm.vercel.app
 Cuando la app de Meta tenga configurados y aprobados los permisos de Instagram, podes
 cambiarlo en el backend por una lista separada por comas.
 
+Para habilitar la seccion de IA, el backend tambien necesita una API key de OpenAI:
+
+```text
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4o-mini
+```
+
+`OPENAI_MODEL` es opcional. La clave de OpenAI debe configurarse solo en el backend
+de Render, nunca en Vercel ni con prefijo `VITE_`.
+
 ## Supabase
 
 La app usa Supabase para inicio de sesión e historial de reportes. En Vercel se usan

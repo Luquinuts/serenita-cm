@@ -92,3 +92,20 @@ class ConnectionRenameInput(BaseModel):
         if not normalized:
             raise ValueError("El nombre de la conexion es obligatorio.")
         return normalized
+
+
+class AiQueryInput(BaseModel):
+    prompt: str = Field(..., min_length=1, max_length=4000)
+
+    @field_validator("prompt")
+    @classmethod
+    def validate_prompt(cls, value: str) -> str:
+        normalized = value.strip()
+        if not normalized:
+            raise ValueError("La consulta es obligatoria.")
+        return normalized
+
+
+class AiQueryOutput(BaseModel):
+    answer: str
+    model: str

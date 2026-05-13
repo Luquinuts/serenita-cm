@@ -14,6 +14,11 @@ type SocialConnection = {
   updated_at: string;
 };
 
+type AiStatus = {
+  configured: boolean;
+  model: string;
+};
+
 type ConnectionsSectionProps = {
   accessToken: string;
 };
@@ -24,6 +29,15 @@ function InstagramIcon() {
       <rect x="4" y="4" width="16" height="16" rx="5" />
       <circle cx="12" cy="12" r="3.5" />
       <circle cx="16.8" cy="7.2" r="0.8" />
+    </svg>
+  );
+}
+
+function OpenAiIcon() {
+  return (
+    <svg className="openai-icon" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+      <path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z" />
     </svg>
   );
 }
@@ -47,6 +61,7 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [connectionName, setConnectionName] = useState("");
+  const [aiStatus, setAiStatus] = useState<AiStatus | null>(null);
 
   const pendingConnectionId = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
@@ -60,6 +75,7 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
 
   useEffect(() => {
     void loadConnections();
+    void loadAiStatus();
   }, [accessToken]);
 
   useEffect(() => {
@@ -98,6 +114,19 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
       setStatus(error instanceof Error ? error.message : "No se pudieron cargar las conexiones.");
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function loadAiStatus() {
+    try {
+      const response = await apiFetch("/api/ai/status");
+      if (!response.ok) {
+        throw new Error("No se pudo verificar OpenAI.");
+      }
+
+      setAiStatus((await response.json()) as AiStatus);
+    } catch {
+      setAiStatus(null);
     }
   }
 
@@ -183,6 +212,20 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
       {status ? <p className="status-line">{status}</p> : null}
 
       <div className="connections-list">
+        <article className="connection-row">
+          <div className="connection-platform-icon">
+            <OpenAiIcon />
+          </div>
+          <div>
+            <strong>OpenAI</strong>
+            <span>{aiStatus?.model ?? "Configurar OPENAI_API_KEY en Render"}</span>
+          </div>
+          <span className="connection-platform">IA</span>
+          <span className={`connection-status ${aiStatus?.configured ? "activa" : "error"}`}>
+            {aiStatus?.configured ? "activa" : "sin configurar"}
+          </span>
+        </article>
+
         {connections.map((connection) => (
           <article className="connection-row" key={connection.id}>
             <div className="connection-platform-icon">

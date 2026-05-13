@@ -911,6 +911,16 @@ button {
   stroke-width: 1.8;
 }
 
+.openai-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
 .connection-platform,
 .connection-status {
   justify-self: end;
@@ -933,6 +943,46 @@ button {
 .connection-status.error,
 .connection-status.revoked {
   color: #ff8c8c;
+}
+
+.ai-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ai-query-form {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-query-form textarea {
+  min-height: 170px;
+  resize: vertical;
+}
+
+.ai-query-form .button {
+  justify-self: flex-start;
+}
+
+.ai-answer {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.ai-answer strong {
+  color: var(--text-strong);
+}
+
+.ai-answer p {
+  margin: 0;
+  color: var(--text-soft);
+  white-space: pre-wrap;
+  line-height: 1.6;
 }
 
 .settings-list {

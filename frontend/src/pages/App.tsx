@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Session } from "@supabase/supabase-js";
+import { AiAssistantSection } from "../sections/AiAssistantSection";
 import { ConnectionsSection } from "../sections/ConnectionsSection";
 import { ReportGeneratorSection } from "../sections/ReportGeneratorSection";
 import { ReportHistorySection } from "../sections/ReportHistorySection";
@@ -25,6 +26,11 @@ const sections = [
     id: "connections",
     navTitle: "Conexion",
     icon: "connection",
+  },
+  {
+    id: "ai",
+    navTitle: "IA",
+    icon: "ai",
   },
   {
     id: "settings",
@@ -70,6 +76,15 @@ function NavIcon({ name }: { name: NavIconName }) {
         <rect x="5" y="5" width="14" height="14" rx="4" />
         <circle cx="12" cy="12" r="3.2" />
         <circle cx="16.5" cy="7.5" r="0.7" />
+      </svg>
+    );
+  }
+
+  if (name === "ai") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+        <path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z" />
       </svg>
     );
   }
@@ -429,6 +444,7 @@ function App() {
         {activeSection === "reports" ? <ReportGeneratorSection userId={session.user.id} /> : null}
         {activeSection === "history" ? <ReportHistorySection userId={session.user.id} /> : null}
         {activeSection === "connections" ? <ConnectionsSection accessToken={session.access_token} /> : null}
+        {activeSection === "ai" ? <AiAssistantSection accessToken={session.access_token} /> : null}
         {activeSection === "settings" ? (
           <section className="panel workspace-content-panel">
             <p className="brand-kicker">Preferencias</p>
