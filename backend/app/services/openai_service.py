@@ -37,6 +37,34 @@ def _extract_text(response_data: dict[str, Any]) -> str:
     return "\n".join(chunk.strip() for chunk in chunks if chunk.strip())
 
 
+def _openai_error_detail(response: httpx.Response) -> str:
+    fallback = "OpenAI no pudo procesar la consulta."
+
+    try:
+        data = response.json()
+    except ValueError:
+        return fallback
+
+    error = data.get("error")
+    if not isinstance(error, dict):
+        return fallback
+
+    message = error.get("message")
+    code = error.get("code")
+    error_type = error.get("type")
+
+    if not isinstance(message, str) or not message.strip():
+        return fallback
+
+    public_reason = message.strip()
+    if isinstance(code, str) and code.strip():
+        public_reason = f"{public_reason} ({code.strip()})"
+    elif isinstance(error_type, str) and error_type.strip():
+        public_reason = f"{public_reason} ({error_type.strip()})"
+
+    return f"OpenAI no pudo procesar la consulta: {public_reason}"
+
+
 async def generate_ai_answer(prompt: str) -> dict[str, str]:
     api_key = require_env("OPENAI_API_KEY")
     model = openai_model()
@@ -62,7 +90,7 @@ async def generate_ai_answer(prompt: str) -> dict[str, str]:
         )
 
     if response.status_code >= 400:
-        raise HTTPException(status_code=502, detail="OpenAI no pudo procesar la consulta.")
+        raise HTTPException(status_code=502, detail=_openai_error_detail(response))
 
     answer = _extract_text(response.json())
     if not answer:
