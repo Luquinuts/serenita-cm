@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CalendarFilters,
   CalendarItemDraft,
@@ -19,7 +19,18 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
   const [selectedCalendar, setSelectedCalendar] = useState<ContentCalendar | null>(null);
   const [items, setItems] = useState<ContentCalendarItem[]>([]);
   const [status, setStatus] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isListLoading, setIsListLoading] = useState(false);
+  const [isDetailLoading, setIsDetailLoading] = useState(false);
+  const selectedCalendarRef = useRef<ContentCalendar | null>(null);
+  const detailCacheRef = useRef<Map<string, CalendarDetail>>(new Map());
+  const listRequestIdRef = useRef(0);
+
+  function selectCalendarDetail(detail: CalendarDetail) {
+    selectedCalendarRef.current = detail.calendar;
+    setSelectedCalendar(detail.calendar);
+    setItems(detail.items);
+    detailCacheRef.current.set(detail.calendar.id, detail);
+  }
 
   const apiFetch = useCallback(
     (path: string, options: RequestInit = {}) =>
@@ -35,8 +46,16 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
   );
 
   const loadCalendarDetail = useCallback(
-    async (calendarId: string) => {
-      setIsLoading(true);
+    async (calendarId: string, options: { force?: boolean; silent?: boolean } = {}) => {
+      const cachedDetail = detailCacheRef.current.get(calendarId);
+      if (cachedDetail && !options.force) {
+        selectCalendarDetail(cachedDetail);
+        return;
+      }
+
+      if (!options.silent) {
+        setIsDetailLoading(true);
+      }
       setStatus("");
 
       try {
@@ -46,19 +65,22 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
         }
 
         const data = (await response.json()) as CalendarDetail;
-        setSelectedCalendar(data.calendar);
-        setItems(data.items);
+        selectCalendarDetail(data);
       } catch (error) {
         setStatus(error instanceof Error ? error.message : "No se pudo cargar el calendario.");
       } finally {
-        setIsLoading(false);
+        if (!options.silent) {
+          setIsDetailLoading(false);
+        }
       }
     },
     [apiFetch],
   );
 
   const loadCalendars = useCallback(async () => {
-    setIsLoading(true);
+    const requestId = listRequestIdRef.current + 1;
+    listRequestIdRef.current = requestId;
+    setIsListLoading(true);
     setStatus("");
 
     const params = new URLSearchParams({
@@ -79,26 +101,34 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       }
 
       const data = (await response.json()) as { calendars: ContentCalendar[] };
+      if (requestId !== listRequestIdRef.current) {
+        return;
+      }
+
       setCalendars(data.calendars);
-      const currentCalendarStillVisible = data.calendars.some((calendar) => calendar.id === selectedCalendar?.id);
+      const currentCalendar = selectedCalendarRef.current;
+      const currentCalendarStillVisible = data.calendars.some((calendar) => calendar.id === currentCalendar?.id);
       if (!currentCalendarStillVisible && data.calendars[0]) {
         await loadCalendarDetail(data.calendars[0].id);
       } else if (!currentCalendarStillVisible) {
+        selectedCalendarRef.current = null;
         setSelectedCalendar(null);
         setItems([]);
       }
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "No se pudieron cargar los calendarios.");
     } finally {
-      setIsLoading(false);
+      if (requestId === listRequestIdRef.current) {
+        setIsListLoading(false);
+      }
     }
-  }, [apiFetch, filters.month, filters.query, filters.status, filters.year, selectedCalendar]);
+  }, [apiFetch, filters.month, filters.query, filters.status, filters.year, loadCalendarDetail]);
 
   useEffect(() => {
     void loadCalendars();
   }, [loadCalendars]);
 
-  async function createCalendar(name: string) {
+  async function createCalendar(name: string): Promise<boolean> {
     const response = await apiFetch("/api/calendars", {
       method: "POST",
       body: JSON.stringify({
@@ -110,11 +140,14 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
     });
     if (!response.ok) {
       setStatus("No se pudo crear el calendario.");
-      return;
+      return false;
     }
     const calendar = (await response.json()) as ContentCalendar;
+    const detail = { calendar, items: [] };
+    selectCalendarDetail(detail);
     setCalendars((current) => [calendar, ...current]);
-    await loadCalendarDetail(calendar.id);
+    setStatus("Calendario creado.");
+    return true;
   }
 
   async function duplicateCalendar(calendarId: string) {
@@ -125,7 +158,9 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
     }
     const calendar = (await response.json()) as ContentCalendar;
     setCalendars((current) => [calendar, ...current]);
-    await loadCalendarDetail(calendar.id);
+    selectCalendarDetail({ calendar, items: [] });
+    void loadCalendarDetail(calendar.id, { force: true, silent: true });
+    setStatus("Calendario duplicado.");
   }
 
   async function deleteCalendar(calendarId: string) {
@@ -135,8 +170,12 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       return;
     }
     setCalendars((current) => current.filter((calendar) => calendar.id !== calendarId));
-    setSelectedCalendar(null);
-    setItems([]);
+    detailCacheRef.current.delete(calendarId);
+    if (selectedCalendarRef.current?.id === calendarId) {
+      selectedCalendarRef.current = null;
+      setSelectedCalendar(null);
+      setItems([]);
+    }
   }
 
   async function createItem(draft: CalendarItemDraft) {
@@ -156,7 +195,16 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       return;
     }
     const item = (await response.json()) as ContentCalendarItem;
-    setItems((current) => [...current, item]);
+    setItems((current) => {
+      const nextItems = [...current, item];
+      if (selectedCalendarRef.current) {
+        detailCacheRef.current.set(selectedCalendarRef.current.id, {
+          calendar: selectedCalendarRef.current,
+          items: nextItems,
+        });
+      }
+      return nextItems;
+    });
     setStatus("Item creado.");
   }
 
@@ -170,7 +218,16 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       return;
     }
     const item = (await response.json()) as ContentCalendarItem;
-    setItems((current) => current.map((currentItem) => (currentItem.id === item.id ? item : currentItem)));
+    setItems((current) => {
+      const nextItems = current.map((currentItem) => (currentItem.id === item.id ? item : currentItem));
+      if (selectedCalendarRef.current) {
+        detailCacheRef.current.set(selectedCalendarRef.current.id, {
+          calendar: selectedCalendarRef.current,
+          items: nextItems,
+        });
+      }
+      return nextItems;
+    });
   }
 
   async function deleteItem(itemId: string) {
@@ -179,7 +236,16 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       setStatus("No se pudo eliminar el item.");
       return;
     }
-    setItems((current) => current.filter((item) => item.id !== itemId));
+    setItems((current) => {
+      const nextItems = current.filter((item) => item.id !== itemId);
+      if (selectedCalendarRef.current) {
+        detailCacheRef.current.set(selectedCalendarRef.current.id, {
+          calendar: selectedCalendarRef.current,
+          items: nextItems,
+        });
+      }
+      return nextItems;
+    });
   }
 
   return {
@@ -187,7 +253,9 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
     selectedCalendar,
     items,
     status,
-    isLoading,
+    isLoading: isListLoading || isDetailLoading,
+    isListLoading,
+    isDetailLoading,
     loadCalendars,
     loadCalendarDetail,
     createCalendar,

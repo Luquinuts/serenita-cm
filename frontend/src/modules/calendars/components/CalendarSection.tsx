@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useCalendars } from "../hooks/useCalendars";
 import {
   contentTypeColors,
@@ -257,6 +257,7 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
   });
   const [viewMode, setViewMode] = useState<CalendarViewMode>("month");
   const [weekAnchor, setWeekAnchor] = useState(today);
+  const [searchQuery, setSearchQuery] = useState("");
   const [draft, setDraft] = useState<CalendarItemDraft | null>(null);
   const [editingItem, setEditingItem] = useState<ContentCalendarItem | null>(null);
   const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
@@ -279,6 +280,14 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
 
   const itemsByDate = useMemo(() => groupItemsByDate(items), [items]);
   const visibleDays = viewMode === "month" ? getMonthGrid(filters.year, filters.month) : getWeekGrid(weekAnchor);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setFilters((current) => ({ ...current, query: searchQuery.trim() }));
+    }, 350);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchQuery]);
 
   function moveWeek(direction: -1 | 1) {
     setWeekAnchor((current) => {
@@ -334,9 +343,11 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
     const normalizedName = newCalendarName.trim();
     if (!normalizedName) return;
 
-    await createCalendar(normalizedName);
-    setNewCalendarName("");
-    setIsCreateCalendarOpen(false);
+    const created = await createCalendar(normalizedName);
+    if (created) {
+      setNewCalendarName("");
+      setIsCreateCalendarOpen(false);
+    }
   }
 
   return (
@@ -358,7 +369,7 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
           <div className="calendar-filters">
             <label className="field">
               <span>Buscar</span>
-              <input value={filters.query} onChange={(event) => setFilters({ ...filters, query: event.target.value })} placeholder="Cliente, campana..." />
+              <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Cliente, campana..." />
             </label>
             <div className="field-grid field-grid-two">
               <label className="field">
