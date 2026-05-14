@@ -203,6 +203,51 @@ function ContentItemModal({
   );
 }
 
+function CalendarCreateModal({
+  name,
+  onChange,
+  onClose,
+  onSubmit,
+}: {
+  name: string;
+  onChange: (name: string) => void;
+  onClose: () => void;
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+}) {
+  return (
+    <div className="modal-backdrop" role="presentation">
+      <form className="content-item-modal calendar-create-modal" onSubmit={onSubmit}>
+        <div className="section-heading">
+          <div>
+            <h2>Nuevo calendario</h2>
+            <p className="workspace-copy">El nombre se usara para encontrarlo rapidamente en el buscador.</p>
+          </div>
+          <button type="button" className="button button-ghost" onClick={onClose}>
+            Cerrar
+          </button>
+        </div>
+
+        <label className="field">
+          <span>Nombre del calendario</span>
+          <input
+            value={name}
+            onChange={(event) => onChange(event.target.value)}
+            placeholder="Ej: Mayo 2026 - Cliente A"
+            autoFocus
+            required
+          />
+        </label>
+
+        <div className="modal-actions">
+          <button type="submit" className="button button-primary" disabled={!name.trim()}>
+            Crear calendario
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export function CalendarSection({ accessToken }: CalendarSectionProps) {
   const [filters, setFilters] = useState<CalendarFilters>({
     month: today.getMonth() + 1,
@@ -214,6 +259,8 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
   const [weekAnchor, setWeekAnchor] = useState(today);
   const [draft, setDraft] = useState<CalendarItemDraft | null>(null);
   const [editingItem, setEditingItem] = useState<ContentCalendarItem | null>(null);
+  const [isCreateCalendarOpen, setIsCreateCalendarOpen] = useState(false);
+  const [newCalendarName, setNewCalendarName] = useState("");
 
   const {
     calendars,
@@ -282,6 +329,16 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
     setEditingItem(null);
   }
 
+  async function submitCalendar(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const normalizedName = newCalendarName.trim();
+    if (!normalizedName) return;
+
+    await createCalendar(normalizedName);
+    setNewCalendarName("");
+    setIsCreateCalendarOpen(false);
+  }
+
   return (
     <section className="panel workspace-content-panel calendars-page">
       <div className="section-heading">
@@ -289,7 +346,7 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
           <h1 className="workspace-title">Calendario</h1>
           <p className="workspace-copy">Planifica contenido mensual por cuenta, estado, tipo y prioridad.</p>
         </div>
-        <button type="button" className="button button-primary" onClick={createCalendar}>
+        <button type="button" className="button button-primary" onClick={() => setIsCreateCalendarOpen(true)}>
           Nuevo calendario
         </button>
       </div>
@@ -345,7 +402,14 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
           </div>
         </aside>
 
-        <main className="calendar-main">
+        <main className={`calendar-main${selectedCalendar ? "" : " disabled"}`}>
+          {!selectedCalendar ? (
+            <div className="calendar-disabled-overlay">
+              <strong>Selecciona o crea un calendario</strong>
+              <span>La grilla queda bloqueada hasta que haya un calendario activo para editar.</span>
+            </div>
+          ) : null}
+
           <div className="calendar-toolbar">
             <div>
               <strong>{selectedCalendar?.name ?? "Sin calendario seleccionado"}</strong>
@@ -421,6 +485,18 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
           }}
           onSubmit={submitItem}
           onDelete={removeEditingItem}
+        />
+      ) : null}
+
+      {isCreateCalendarOpen ? (
+        <CalendarCreateModal
+          name={newCalendarName}
+          onChange={setNewCalendarName}
+          onClose={() => {
+            setIsCreateCalendarOpen(false);
+            setNewCalendarName("");
+          }}
+          onSubmit={submitCalendar}
         />
       ) : null}
     </section>

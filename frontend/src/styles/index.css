@@ -1016,6 +1016,43 @@ button {
   gap: 12px;
 }
 
+.calendar-main {
+  position: relative;
+}
+
+.calendar-main.disabled .calendar-toolbar,
+.calendar-main.disabled .calendar-grid {
+  opacity: 0.34;
+  filter: grayscale(0.8);
+  pointer-events: none;
+}
+
+.calendar-disabled-overlay {
+  position: absolute;
+  inset: 58px 0 auto;
+  z-index: 2;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  margin: 0 auto;
+  width: min(420px, calc(100% - 32px));
+  padding: 16px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 8px;
+  background: var(--panel);
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.calendar-disabled-overlay strong {
+  color: var(--text-strong);
+}
+
+.calendar-disabled-overlay span {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
 .calendar-card {
   display: grid;
   gap: 10px;

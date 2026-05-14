@@ -98,11 +98,11 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
     void loadCalendars();
   }, [loadCalendars]);
 
-  async function createCalendar() {
+  async function createCalendar(name: string) {
     const response = await apiFetch("/api/calendars", {
       method: "POST",
       body: JSON.stringify({
-        name: `Calendario ${filters.month}/${filters.year}`,
+        name,
         month: filters.month,
         year: filters.year,
         status: "draft",
