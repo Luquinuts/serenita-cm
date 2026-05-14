@@ -1163,29 +1163,21 @@ button {
 
 .calendar-item-pill {
   min-height: 34px;
-  display: grid;
-  grid-template-columns: 8px minmax(0, 1fr);
-  gap: 8px;
-  align-items: center;
-  border: 1px solid var(--md-sys-color-outline-variant);
+  display: block;
+  border: 1px solid color-mix(in srgb, var(--item-color) 72%, transparent);
   border-radius: 6px;
-  padding: 7px 8px;
-  background: var(--md-sys-color-surface-container-low);
+  padding: 8px 9px;
+  background: color-mix(in srgb, var(--item-color) 24%, var(--card));
   color: var(--text-strong);
   text-align: left;
   font-size: 0.84rem;
+  box-shadow: inset 3px 0 0 color-mix(in srgb, var(--item-color) 86%, transparent);
 }
 
 .calendar-item-pill span:last-child {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.calendar-item-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
 }
 
 .calendar-item-meta {
@@ -1212,6 +1204,27 @@ button {
 
 .calendar-status-badge.en_progreso {
   color: #f6c85f;
+}
+
+.calendar-color-options {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  flex-wrap: wrap;
+}
+
+.calendar-color-options button {
+  width: 28px;
+  height: 28px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 0;
+}
+
+.calendar-color-options button.active {
+  border-color: var(--md-sys-color-on-surface);
+  box-shadow: 0 0 0 2px var(--md-sys-color-surface-container-low);
 }
 
 .modal-backdrop {

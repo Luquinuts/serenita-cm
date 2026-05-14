@@ -30,11 +30,13 @@ export const priorityLabels: Record<ContentItemPriority, string> = {
 };
 
 export const contentTypeColors: Record<ContentType, string> = {
-  reel: "#50e3c2",
-  carousel: "#71a8ff",
-  story: "#f6c85f",
-  content_creation: "#d493ff",
+  reel: "#2dd4bf",
+  carousel: "#60a5fa",
+  story: "#facc15",
+  content_creation: "#c084fc",
 };
+
+export const calendarColorOptions = ["#2dd4bf", "#60a5fa", "#facc15", "#c084fc", "#fb7185", "#a3e635"];
 
 export function toDateKey(date: Date): string {
   const year = date.getFullYear();

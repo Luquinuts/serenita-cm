@@ -1,7 +1,8 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import React, { FormEvent, useEffect, useMemo, useState } from "react";
 import { useCalendars } from "../hooks/useCalendars";
 import {
   contentTypeColors,
+  calendarColorOptions,
   contentTypeLabels,
   getMonthGrid,
   getWeekGrid,
@@ -90,9 +91,15 @@ function CalendarItemPill({
   item: ContentCalendarItem;
   onEdit: () => void;
 }) {
+  const itemColor = item.color_tag ?? contentTypeColors[item.content_type];
+
   return (
-    <button type="button" className={`calendar-item-pill priority-${item.priority}`} onClick={onEdit}>
-      <span className="calendar-item-dot" style={{ background: item.color_tag ?? contentTypeColors[item.content_type] }} />
+    <button
+      type="button"
+      className={`calendar-item-pill priority-${item.priority}`}
+      onClick={onEdit}
+      style={{ "--item-color": itemColor } as React.CSSProperties}
+    >
       <span>{item.title}</span>
     </button>
   );
@@ -160,7 +167,18 @@ function ContentItemModal({
           </label>
           <label className="field">
             <span>Color</span>
-            <input type="color" value={draft.color_tag || contentTypeColors[draft.content_type]} onChange={(event) => onChange({ ...draft, color_tag: event.target.value })} />
+            <div className="calendar-color-options">
+              {calendarColorOptions.map((color) => (
+                <button
+                  type="button"
+                  className={draft.color_tag === color ? "active" : ""}
+                  style={{ background: color }}
+                  onClick={() => onChange({ ...draft, color_tag: color })}
+                  aria-label={`Color ${color}`}
+                  key={color}
+                />
+              ))}
+            </div>
           </label>
           <label className="field">
             <span>Estado</span>
