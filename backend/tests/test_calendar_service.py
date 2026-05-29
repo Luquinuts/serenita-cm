@@ -116,6 +116,17 @@ class TestCreateCalendar:
         assert result["id"] == "cal-new"
         mock_insert.assert_awaited_once()
 
+    async def test_creates_without_month_year(self, mock_select: AsyncMock, mock_insert: AsyncMock, user_id: str) -> None:
+        """Calendars are timeless — creation without month/year must work."""
+        mock_select.return_value = [{"organization_id": "org-1", "role": "owner"}]
+        mock_insert.return_value = {"id": "cal-timeless", "name": "Sin periodo", "month": None, "year": None}
+
+        from app.schemas import CalendarCreateInput
+
+        result = await create_calendar(CalendarCreateInput(name="Sin periodo"), user_id)
+        assert result["id"] == "cal-timeless"
+        mock_insert.assert_awaited_once()
+
 
 class TestDuplicateCalendar:
     async def test_duplicates_calendar_and_items(self, mock_select: AsyncMock, mock_insert: AsyncMock, user_id: str) -> None:

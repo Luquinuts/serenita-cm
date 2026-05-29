@@ -10,8 +10,8 @@ export type ContentCalendar = {
   user_id: string | null;
   name: string;
   description: string | null;
-  month: number;
-  year: number;
+  month: number | null;
+  year: number | null;
   status: CalendarStatus;
   metadata: Record<string, unknown>;
   created_at: string;

@@ -124,8 +124,8 @@ class CalendarCreateInput(BaseModel):
     organization_id: str | None = None
     name: str = Field(..., min_length=1, max_length=120)
     description: str | None = Field(default=None, max_length=800)
-    month: int = Field(..., ge=1, le=12)
-    year: int = Field(..., ge=2020, le=2100)
+    month: int | None = Field(default=None, ge=1, le=12)
+    year: int | None = Field(default=None, ge=2020, le=2100)
     status: CalendarStatus = "draft"
     metadata: dict[str, Any] = Field(default_factory=dict)
 

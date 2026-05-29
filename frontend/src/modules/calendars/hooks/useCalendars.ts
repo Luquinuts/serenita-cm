@@ -83,10 +83,7 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
     setIsListLoading(true);
     setStatus("");
 
-    const params = new URLSearchParams({
-      month: String(filters.month),
-      year: String(filters.year),
-    });
+    const params = new URLSearchParams();
     if (filters.status !== "all") {
       params.set("status", filters.status);
     }
@@ -122,7 +119,7 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
         setIsListLoading(false);
       }
     }
-  }, [apiFetch, filters.month, filters.query, filters.status, filters.year, loadCalendarDetail]);
+  }, [apiFetch, filters.query, filters.status, loadCalendarDetail]);
 
   useEffect(() => {
     void loadCalendars();
@@ -133,8 +130,6 @@ export function useCalendars(accessToken: string, filters: CalendarFilters) {
       method: "POST",
       body: JSON.stringify({
         name,
-        month: filters.month,
-        year: filters.year,
         status: "draft",
       }),
     });

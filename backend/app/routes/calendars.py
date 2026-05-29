@@ -51,16 +51,12 @@ async def get_calendars(
         _eq("organization_id", resolved_organization_id),
         "deleted_at=is.null",
     ]
-    if month:
-        filters.append(f"month=eq.{month}")
-    if year:
-        filters.append(f"year=eq.{year}")
     if status:
         filters.append(f"status=eq.{quote(status, safe='')}")
     if q:
         filters.append(f"name=ilike.*{quote(q, safe='')}*")
 
-    filters.append("order=year.desc,month.desc,updated_at.desc")
+    filters.append("order=updated_at.desc")
     records = await select_records("content_calendars", "&".join(filters))
     return {"calendars": records}
 

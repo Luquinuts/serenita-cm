@@ -38,6 +38,7 @@ Last updated: 2026-05-28
 | `serenita-backend` | Serenita CM backend patterns: FastAPI, services, Supabase REST, AI providers. | project | `skills/serenita-backend/SKILL.md` |
 | `serenita-supabase` | Serenita CM database: schema, RLS, migrations, auth patterns. | project | `skills/serenita-supabase/SKILL.md` |
 | `serenita-deploy` | Serenita CM deployment: Vercel, Render, env vars, CI/CD. | project | `skills/serenita-deploy/SKILL.md` |
+| `serenita-design` | Serenita CM design system: MD3 tokens, CSS custom properties, dark/light theme, layout system, card/button variants, responsive breakpoints, SVG icons. | project | `skills/serenita-design/SKILL.md` |
 
 ## Loading protocol
 

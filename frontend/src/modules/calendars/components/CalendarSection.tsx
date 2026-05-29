@@ -56,9 +56,7 @@ function CalendarCard({
     <article className={`calendar-card${isActive ? " active" : ""}`}>
       <button type="button" onClick={onSelect}>
         <strong>{calendar.name}</strong>
-        <span>
-          {monthNames[calendar.month - 1]} {calendar.year} · {calendar.status}
-        </span>
+        <span>{calendar.status}</span>
       </button>
       <div className="calendar-card-actions">
         <button type="button" className="button button-ghost small" onClick={onDuplicate}>
@@ -427,7 +425,7 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
                 onDelete={() => deleteCalendar(calendar.id)}
               />
             ))}
-            {!isLoading && calendars.length === 0 ? <p className="history-empty">Todavia no hay calendarios para este periodo.</p> : null}
+            {!isLoading && calendars.length === 0 ? <p className="history-empty">Todavia no hay calendarios. Crea uno nuevo para empezar.</p> : null}
           </div>
         </aside>
 

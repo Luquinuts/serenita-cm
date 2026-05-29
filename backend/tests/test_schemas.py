@@ -102,6 +102,14 @@ class TestCalendarCreateInput:
         assert cal.name == "Calendario Mayo"
         assert cal.status == "draft"
 
+    def test_create_without_month_year(self) -> None:
+        """Calendars are timeless — month/year are optional metadata."""
+        cal = CalendarCreateInput(name="Solo nombre")
+        assert cal.name == "Solo nombre"
+        assert cal.month is None
+        assert cal.year is None
+        assert cal.status == "draft"
+
     def test_invalid_month(self) -> None:
         with pytest.raises(ValidationError):
             CalendarCreateInput(name="Mal", month=13, year=2026)
