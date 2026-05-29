@@ -234,6 +234,7 @@ button {
   width: 96px;
   height: 96px;
   border-radius: 26px;
+  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.15));
 }
 
 .login-hero h1,
@@ -267,6 +268,10 @@ button {
 .login-button {
   width: 100%;
   justify-content: center;
+}
+
+.login-button:hover {
+  box-shadow: 0 0 24px rgba(0, 212, 255, 0.18), 0 0 6px rgba(0, 212, 255, 0.1);
 }
 
 .login-error {
@@ -331,10 +336,10 @@ button {
   overflow-x: hidden;
   border-radius: 0;
   border: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(10, 10, 10, 0.72);
-  backdrop-filter: blur(32px) saturate(1.1);
-  -webkit-backdrop-filter: blur(32px) saturate(1.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  background: rgba(8, 8, 12, 0.35);
+  backdrop-filter: blur(48px) saturate(1.2);
+  -webkit-backdrop-filter: blur(48px) saturate(1.2);
 }
 
 .sidebar-main {
@@ -362,7 +367,8 @@ button {
 }
 
 .sidebar-brand-button:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 212, 255, 0.04);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.06);
 }
 
 .sidebar-brand strong {
@@ -428,7 +434,8 @@ button {
 }
 
 .sidebar-link.active {
-  background: rgba(0, 212, 255, 0.06);
+  background: rgba(0, 212, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.08);
 }
 
 .sidebar-link.active strong {
@@ -443,6 +450,7 @@ button {
   display: grid;
   place-items: center;
   color: var(--md-sys-color-on-surface-variant);
+  transition: color 0.15s ease, filter 0.15s ease;
 }
 
 .nav-rail-icon {
@@ -450,6 +458,7 @@ button {
   height: 16px;
   display: grid;
   place-items: center;
+  transition: color 0.15s ease;
 }
 
 .nav-rail-icon svg {
@@ -460,6 +469,7 @@ button {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
+  transition: stroke 0.15s ease;
 }
 
 .sidebar-link > span:last-child {
@@ -469,11 +479,17 @@ button {
 
 .sidebar-link.active .nav-rail-indicator {
   background: transparent;
-  color: var(--accent);
+  color: #00d4ff;
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.4));
 }
 
 .sidebar-link:hover {
   background: rgba(255, 255, 255, 0.04);
+}
+
+.sidebar-link:hover .nav-rail-indicator {
+  color: rgba(0, 212, 255, 0.7);
+  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.25));
 }
 
 .sidebar-link:hover strong {
@@ -521,7 +537,7 @@ button {
 
 .sidebar-collapsed .app-sidebar {
   padding: 12px 8px;
-  background: rgba(10, 10, 10, 0.64);
+  background: rgba(8, 8, 12, 0.28);
 }
 
 .sidebar-collapsed .sidebar-brand {
@@ -568,7 +584,12 @@ button {
 }
 
 .sidebar-collapsed .sidebar-link.active {
-  background: rgba(0, 212, 255, 0.06);
+  background: rgba(0, 212, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(0, 212, 255, 0.08);
+}
+
+.sidebar-collapsed .sidebar-link:hover .nav-rail-indicator {
+  filter: drop-shadow(0 0 6px rgba(0, 212, 255, 0.35));
 }
 
 
@@ -909,6 +930,7 @@ button {
 .button-primary:hover {
   background: rgba(0, 212, 255, 0.14);
   border-color: rgba(0, 212, 255, 0.25);
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.12), 0 0 4px rgba(0, 212, 255, 0.08);
 }
 
 .button-secondary {
@@ -917,12 +939,24 @@ button {
   color: var(--md-sys-color-on-surface);
 }
 
+.button-secondary:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.06);
+}
+
 .button-ghost {
   border-color: transparent;
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+.button-ghost:hover {
+  color: var(--md-sys-color-primary);
+  background: rgba(0, 212, 255, 0.04);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.06);
 }
 
 .button:hover {
