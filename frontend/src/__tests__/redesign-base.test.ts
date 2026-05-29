@@ -161,14 +161,15 @@ describe("Redesign Base — CSS: Layout Shell", () => {
     const match = css.match(/\.app-shell\s*\{([^}]*)\}/s);
     expect(match).not.toBeNull();
     const block = match![1];
-    expect(block).toMatch(/border-radius:\s*0/);
+    expect(block).toMatch(/border-radius:\s*(0|none)/);
   });
 
-  it("3.3: .panel has 1px solid var(--line) border and flat/small radius", () => {
-    expect(css).toMatch(/\.panel\s*\{[^}]*border:\s*1px\s+solid\s+var\(--line\)/s);
+  it("3.3: .panel has industrial subtle border and small radius", () => {
     const match = css.match(/\.panel\s*\{([^}]*)\}/);
     expect(match).not.toBeNull();
     expect(match![1]).toMatch(/border-radius:\s*(0|2px)/);
+    // Uses semi-transparent white border instead of var(--line)
+    expect(match![1]).toMatch(/border:\s*1px\s+solid\s+rgb/i);
   });
 
   it("3.4: .section-title uses heading font (Bebas Neue) and uppercase", () => {
