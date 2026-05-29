@@ -5,6 +5,11 @@ import { CalendarSection } from "../components/CalendarSection";
 const mockFetch = vi.fn();
 vi.stubGlobal("fetch", mockFetch);
 
+/** Promise that never resolves — keeps loading state active */
+function pendingPromise() {
+  return new Promise<never>(() => {});
+}
+
 function mockListResponse(calendars: unknown[]) {
   return {
     ok: true,
@@ -62,6 +67,47 @@ describe("CalendarSection", () => {
     await waitFor(() => {
       const emptyMsg = screen.queryByText(/para este periodo/i);
       expect(emptyMsg).not.toBeInTheDocument();
+    });
+  });
+
+  it("shows centered spinner in sidebar during list loading when no calendars yet", async () => {
+    // Make the list fetch hang indefinitely → isListLoading stays true
+    mockFetch.mockReturnValueOnce(pendingPromise());
+
+    render(<CalendarSection accessToken="test-token" />);
+
+    await waitFor(() => {
+      // Spinner with label should appear in sidebar area
+      const spinner = screen.getByRole("status");
+      expect(spinner).toBeInTheDocument();
+    });
+  });
+
+  it("shows centered spinner in main grid during detail loading", async () => {
+    const calendar = {
+      id: "cal-1",
+      organization_id: "org-1",
+      user_id: null,
+      name: "Calendario con carga",
+      description: null,
+      month: 5,
+      year: 2026,
+      status: "active",
+      metadata: {},
+      created_at: "2026-05-29T00:00:00Z",
+      updated_at: "2026-05-29T00:00:00Z",
+    };
+
+    // List fetch resolves with a calendar, but detail fetch hangs
+    mockFetch
+      .mockResolvedValueOnce(mockListResponse([calendar]))
+      .mockReturnValueOnce(pendingPromise());
+
+    render(<CalendarSection accessToken="test-token" />);
+
+    await waitFor(() => {
+      const spinner = screen.getByRole("status");
+      expect(spinner).toBeInTheDocument();
     });
   });
 });

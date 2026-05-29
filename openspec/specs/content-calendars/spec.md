@@ -79,3 +79,30 @@ This behavior is independent of calendar visibility.
 - GIVEN a visible calendar with items in different months
 - WHEN a user selects month=5
 - THEN only items with scheduled_date in May appear in the grid
+
+### Requirement: CalendarSection loading
+
+The CalendarSection MUST show a centered Spinner during calendar list fetch
+and during calendar detail/item fetch. The Spinner replaces the empty grid
+area to indicate active loading.
+
+#### Scenario: Initial list load
+
+- GIVEN a user opens CalendarSection
+- WHEN calendars are being fetched
+- THEN a centered Spinner with `label="Cargando calendarios"` is shown
+- AND the grid area is empty (no stale data shown)
+
+#### Scenario: Calendar detail load
+
+- GIVEN a user has an active calendar and selects a different one
+- WHEN the new calendar's details are being fetched
+- THEN a centered Spinner replaces the grid content
+- AND the sidebar still shows the calendar list
+
+#### Scenario: Load completes
+
+- GIVEN a Spinner is showing
+- WHEN data finishes loading
+- THEN the Spinner is removed
+- AND the calendar grid renders with data

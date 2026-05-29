@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useMemo, useState } from "react";
+import { Spinner } from "../../../components/Spinner";
 import { useCalendars } from "../hooks/useCalendars";
 import {
   contentTypeColors,
@@ -285,6 +286,8 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
     items,
     status,
     isLoading,
+    isListLoading,
+    isDetailLoading,
     loadCalendarDetail,
     createCalendar,
     duplicateCalendar,
@@ -415,17 +418,25 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
           </div>
 
           <div className="calendar-list">
-            {calendars.map((calendar) => (
-              <CalendarCard
-                key={calendar.id}
-                calendar={calendar}
-                isActive={selectedCalendar?.id === calendar.id}
-                onSelect={() => loadCalendarDetail(calendar.id)}
-                onDuplicate={() => duplicateCalendar(calendar.id)}
-                onDelete={() => deleteCalendar(calendar.id)}
-              />
-            ))}
-            {!isLoading && calendars.length === 0 ? <p className="history-empty">Todavia no hay calendarios. Crea uno nuevo para empezar.</p> : null}
+            {isListLoading && calendars.length === 0 ? (
+              <div className="spinner-center">
+                <Spinner label="Cargando calendarios" />
+              </div>
+            ) : (
+              <>
+                {calendars.map((calendar) => (
+                  <CalendarCard
+                    key={calendar.id}
+                    calendar={calendar}
+                    isActive={selectedCalendar?.id === calendar.id}
+                    onSelect={() => loadCalendarDetail(calendar.id)}
+                    onDuplicate={() => duplicateCalendar(calendar.id)}
+                    onDelete={() => deleteCalendar(calendar.id)}
+                  />
+                ))}
+                {!isLoading && calendars.length === 0 ? <p className="history-empty">Todavia no hay calendarios. Crea uno nuevo para empezar.</p> : null}
+              </>
+            )}
           </div>
         </aside>
 
@@ -467,37 +478,43 @@ export function CalendarSection({ accessToken }: CalendarSectionProps) {
             ) : null}
           </div>
 
-          <div className={`calendar-grid ${viewMode}`}>
-            {["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"].map((day) => (
-              <div className="calendar-weekday" key={day}>
-                {day}
-              </div>
-            ))}
-            {visibleDays.map((date) => {
-              const dateKey = toDateKey(date);
-              const dayItems = itemsByDate[dateKey] ?? [];
-              const isCurrentMonth = date.getMonth() + 1 === filters.month;
-              return (
-                <article className={`calendar-day${isCurrentMonth ? "" : " muted"}`} key={dateKey}>
-                  <button type="button" className="calendar-day-header" onClick={() => openNewItem(dateKey)} disabled={!selectedCalendar}>
-                    <span>{date.getDate()}</span>
-                    <strong>+</strong>
-                  </button>
-                  <div className="calendar-day-items">
-                    {dayItems.map((item) => (
-                      <div className="calendar-item-stack" key={item.id}>
-                        <CalendarItemPill item={item} onEdit={() => openEditItem(item)} />
-                        <div className="calendar-item-meta">
-                          <ContentTypeBadge type={item.content_type} />
-                          <StatusBadge status={item.status} />
+          {isDetailLoading ? (
+            <div className="spinner-center">
+              <Spinner label="Cargando calendario..." />
+            </div>
+          ) : (
+            <div className={`calendar-grid ${viewMode}`}>
+              {["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"].map((day) => (
+                <div className="calendar-weekday" key={day}>
+                  {day}
+                </div>
+              ))}
+              {visibleDays.map((date) => {
+                const dateKey = toDateKey(date);
+                const dayItems = itemsByDate[dateKey] ?? [];
+                const isCurrentMonth = date.getMonth() + 1 === filters.month;
+                return (
+                  <article className={`calendar-day${isCurrentMonth ? "" : " muted"}`} key={dateKey}>
+                    <button type="button" className="calendar-day-header" onClick={() => openNewItem(dateKey)} disabled={!selectedCalendar}>
+                      <span>{date.getDate()}</span>
+                      <strong>+</strong>
+                    </button>
+                    <div className="calendar-day-items">
+                      {dayItems.map((item) => (
+                        <div className="calendar-item-stack" key={item.id}>
+                          <CalendarItemPill item={item} onEdit={() => openEditItem(item)} />
+                          <div className="calendar-item-meta">
+                            <ContentTypeBadge type={item.content_type} />
+                            <StatusBadge status={item.status} />
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
+                      ))}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </main>
       </div>
 

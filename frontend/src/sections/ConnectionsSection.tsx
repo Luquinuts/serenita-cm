@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { Spinner } from "../components/Spinner";
 
 const API_URL =
   import.meta.env.VITE_API_URL ?? `${window.location.protocol}//${window.location.hostname}:8000`;
@@ -295,7 +296,11 @@ export function ConnectionsSection({ accessToken }: ConnectionsSectionProps) {
         <p className="history-empty">Todavia no hay cuentas de Instagram conectadas.</p>
       ) : null}
 
-      {isLoading ? <p className="history-empty">Cargando conexiones...</p> : null}
+      {isLoading ? (
+        <div className="spinner-center">
+          <Spinner label="Cargando conexiones..." />
+        </div>
+      ) : null}
     </section>
   );
 }

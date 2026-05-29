@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Spinner } from "../components/Spinner";
 import { supabase } from "../lib/supabase";
 import { ReportData } from "../types/report";
 import { hydrateReportData } from "../utils/reportHelpers";
@@ -156,10 +157,12 @@ export function ReportHistorySection({ userId }: ReportHistorySectionProps) {
             </article>
           ))}
         </div>
+      ) : isHistoryLoading ? (
+        <div className="spinner-center">
+          <Spinner label="Buscando reportes guardados..." />
+        </div>
       ) : (
-        <p className="history-empty">
-          {isHistoryLoading ? "Buscando reportes guardados..." : "Todavia no hay reportes guardados para este usuario."}
-        </p>
+        <p className="history-empty">Todavia no hay reportes guardados para este usuario.</p>
       )}
     </section>
   );
