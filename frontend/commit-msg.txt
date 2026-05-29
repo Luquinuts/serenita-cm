@@ -1,0 +1,10 @@
+feat(ui): Metalab-inspired polish — smooth transitions, card hover, refined hierarchy
+
+- Added --text-bold/--text-regular/--text-subtle hierarchy variables
+- Added --transition-fast/base/slow tokens (0.15s/0.2s/0.3s)
+- All interactive elements use transition tokens instead of hardcoded values
+- Cards (history, settings, calendar, connection-row): subtle hover effect (border + bg)
+- Menu cards: hover lift (-2px translateY) + deeper shadow
+- Nested .panel: more subtle nested background
+- connection-row: updated from old MD3 vars to new rgba borders + hover
+- menu-module-card: updated borders from old green accent to neutral rgba

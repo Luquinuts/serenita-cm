@@ -56,6 +56,11 @@
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
+  /* Text hierarchy — Metalab-style naming */
+  --text-bold: var(--md-sys-color-on-surface);
+  --text-regular: var(--md-sys-color-on-surface);
+  --text-subtle: var(--md-sys-color-on-surface-variant);
+
   --text-heading-xl: 48px;
   --text-heading-lg: 36px;
   --text-heading-md: 28px;
@@ -68,6 +73,11 @@
 
   --letter-spacing-heading: 0.03em;
   --letter-spacing-mono: -0.02em;
+
+  /* Transition tokens — Metalab uses 0.2s base */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease;
+  --transition-slow: 0.3s ease;
 
   /* State layers */
   --md-sys-state-hover: rgba(230, 225, 229, 0.08);
@@ -364,7 +374,7 @@ button {
   background: transparent;
   color: inherit;
   text-align: left;
-  transition: background 0.12s ease;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .sidebar-brand-button:hover {
@@ -412,7 +422,7 @@ button {
   row-gap: 2px;
   align-items: center;
   position: relative;
-  transition: background 0.12s ease;
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
 .sidebar-link strong {
@@ -451,7 +461,7 @@ button {
   display: grid;
   place-items: center;
   color: var(--md-sys-color-on-surface-variant);
-  transition: color 0.15s ease, filter 0.15s ease;
+  transition: color var(--transition-base), filter var(--transition-base);
 }
 
 .nav-rail-icon {
@@ -625,7 +635,7 @@ button {
 
 .menu-module-card {
   min-height: 220px;
-  border: 1px solid rgba(216, 223, 235, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 28px;
   padding: 24px;
   background:
@@ -637,6 +647,13 @@ button {
   align-content: start;
   gap: 10px;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
+  transition: border-color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.menu-module-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
 }
 
 .menu-module-card strong {
@@ -785,6 +802,11 @@ button {
   box-shadow: none;
 }
 
+.panel .panel {
+  border-color: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.015);
+}
+
 .panel-form {
   padding: 20px;
   max-height: calc(100vh - 48px);
@@ -910,7 +932,7 @@ button {
   letter-spacing: 0.01em;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .button.small {
@@ -1086,6 +1108,12 @@ button {
   border-radius: 2px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.02);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.history-card:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .history-card strong,
@@ -1151,9 +1179,15 @@ button {
   gap: 14px;
   align-items: center;
   padding: 12px 14px;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: 8px;
-  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.02);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.connection-row:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .connection-row strong,
@@ -1339,6 +1373,12 @@ button {
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 2px;
   background: rgba(255, 255, 255, 0.02);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.calendar-card:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .calendar-card.active {
@@ -1558,6 +1598,12 @@ button {
   border-radius: 2px;
   padding: 14px;
   background: rgba(255, 255, 255, 0.02);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.settings-row:hover {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .settings-row strong,
