@@ -1,0 +1,12 @@
+fix(ui): light mode consistency — glass tokens, toggle, skeleton, body overlays
+
+Light mode was broken after cyber-noir redesign because all glass effects
+used hardcoded rgba(255,255,255) values invisible on white background.
+
+- Added 14 light-aware CSS variables in :root with dark defaults
+- Added data-theme light overrides for all glass tokens
+- Replaced 40+ hardcoded rgba white values with semantic variables
+- Fixed toggle switch: off track, thumb color, checked shadow use vars
+- Fixed skeleton: light mode has distinct bg and shimmer colors
+- Fixed body ambient gradient and dot grid overlays
+- Updated redesign-base test to accept variable-based border
