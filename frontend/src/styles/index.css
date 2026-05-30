@@ -509,7 +509,8 @@ button {
 .sidebar-link:focus-visible,
 .sidebar-brand-button:focus-visible,
 .button:focus-visible,
-.segmented-control button:focus-visible {
+.segmented-control button:focus-visible,
+.menu-module-card:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -825,7 +826,7 @@ button {
 .brand-block h1,
 .preview-header h2 {
   margin: 0;
-  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-body);
   font-size: clamp(1.4rem, 2vw, 2rem);
   line-height: 1.08;
   letter-spacing: 0;
@@ -1000,9 +1001,9 @@ button {
 
 .form-section h2 {
   margin: 0 0 16px;
-  font-family: "Google Sans", "Product Sans", Inter, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-body);
   letter-spacing: 0;
-  color: var(--md-sys-color-on-surface);
+  color: var(--text);
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
@@ -1051,10 +1052,17 @@ button {
   transition: border-color 0.15s ease;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  outline: none;
+.field input:focus-visible,
+.field select:focus-visible,
+.field textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: rgba(0, 212, 255, 0.3);
+}
+
+.field input:focus:not(:focus-visible),
+.field select:focus:not(:focus-visible),
+.field textarea:focus:not(:focus-visible) {
   border-color: rgba(0, 212, 255, 0.3);
 }
 
@@ -1249,13 +1257,13 @@ button {
 }
 
 .connection-status.activa {
-  color: #50e3c2;
+  color: var(--md-sys-color-primary);
 }
 
 .connection-status.expirada,
 .connection-status.error,
 .connection-status.revoked {
-  color: #ff8c8c;
+  color: var(--text-disabled);
 }
 
 .ai-panel {
@@ -1278,7 +1286,9 @@ button {
   justify-self: flex-start;
 }
 
-.ai-provider-control {
+.ai-provider-toggles {
+  display: flex;
+  gap: 16px;
   justify-self: flex-start;
 }
 
@@ -1424,6 +1434,12 @@ button {
   flex-wrap: wrap;
 }
 
+.calendar-toolbar > div > span {
+  font-family: var(--font-heading);
+  letter-spacing: var(--letter-spacing-heading);
+  text-transform: uppercase;
+}
+
 .calendar-week-actions {
   display: flex;
   gap: 8px;
@@ -1519,15 +1535,15 @@ button {
 }
 
 .calendar-status-badge.publicado {
-  color: #50e3c2;
+  color: var(--accent-green);
 }
 
 .calendar-status-badge.aprobado {
-  color: #71a8ff;
+  color: var(--accent-blue);
 }
 
 .calendar-status-badge.en_progreso {
-  color: #f6c85f;
+  color: var(--md-sys-color-primary);
 }
 
 .calendar-color-options {
@@ -2509,4 +2525,255 @@ button {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ToggleSwitch component */
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.toggle-switch-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background var(--transition-base);
+  flex-shrink: 0;
+}
+
+.toggle-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  transition: transform var(--transition-base), background var(--transition-base);
+}
+
+[aria-checked="true"] > .toggle-switch-track {
+  background: var(--md-sys-color-primary);
+}
+
+[aria-checked="true"] > .toggle-switch-track > .toggle-switch-thumb {
+  transform: translateX(16px);
+  background: var(--md-sys-color-on-primary);
+}
+
+.toggle-switch:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.toggle-switch:focus-visible {
+  outline: none;
+}
+
+.toggle-switch:focus-visible .toggle-switch-track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.toggle-switch-label {
+  font-size: inherit;
+  color: var(--text);
+  user-select: none;
+}
+
+/* Skeleton component */
+.skeleton {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--card);
+  vertical-align: middle;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--line-subtle) 50%,
+    transparent 100%
+  );
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton--text {
+  height: 1em;
+  width: 100%;
+  border-radius: 2px;
+}
+
+.skeleton--rect {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.skeleton--circle {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+}
+
+/* Tooltip component */
+.tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip-content {
+  position: absolute;
+  z-index: 1000;
+  background: var(--card);
+  border: 1px solid var(--line-subtle);
+  border-radius: 2px;
+  padding: 4px 8px;
+  font-size: var(--text-body-sm, 13px);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+
+  /* Default: top */
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+}
+
+/* Show on hover or focus-within */
+.tooltip-wrapper:hover .tooltip-content,
+.tooltip-wrapper:focus-within .tooltip-content {
+  opacity: 1;
+}
+
+/* Arrow — shared ::before (border) and ::after (fill) */
+.tooltip-content::before,
+.tooltip-content::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Arrow border (matches --line-subtle) */
+.tooltip-content::before {
+  top: 100%;
+  border: 5px solid transparent;
+  border-top-color: var(--line-subtle);
+}
+
+/* Arrow fill (matches --card) — overlaps border by 1px */
+.tooltip-content::after {
+  top: 100%;
+  border: 4px solid transparent;
+  border-top-color: var(--card);
+  margin-top: -1px;
+}
+
+/* Position: bottom — flip everything */
+.tooltip-bottom .tooltip-content {
+  bottom: auto;
+  top: 100%;
+  margin-bottom: 0;
+  margin-top: 6px;
+}
+
+.tooltip-bottom .tooltip-content::before {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: var(--line-subtle);
+}
+
+.tooltip-bottom .tooltip-content::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: var(--card);
+  margin-top: 0;
+  margin-bottom: -1px;
+}
+
+/* Position: left */
+.tooltip-left .tooltip-content {
+  bottom: auto;
+  top: 50%;
+  left: auto;
+  right: 100%;
+  transform: translateY(-50%);
+  margin-bottom: 0;
+  margin-right: 8px;
+}
+
+.tooltip-left .tooltip-content::before {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-left-color: var(--line-subtle);
+}
+
+.tooltip-left .tooltip-content::after {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  border-top-color: transparent;
+  border-left-color: var(--card);
+  margin-left: -1px;
+}
+
+/* Position: right */
+.tooltip-right .tooltip-content {
+  bottom: auto;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  margin-bottom: 0;
+  margin-left: 8px;
+}
+
+.tooltip-right .tooltip-content::before {
+  top: 50%;
+  left: auto;
+  right: 100%;
+  transform: translateY(-50%);
+  border-top-color: transparent;
+  border-right-color: var(--line-subtle);
+}
+
+.tooltip-right .tooltip-content::after {
+  top: 50%;
+  left: auto;
+  right: 100%;
+  transform: translateY(-50%);
+  margin-top: 0;
+  border-top-color: transparent;
+  border-right-color: var(--card);
+  margin-right: -1px;
 }

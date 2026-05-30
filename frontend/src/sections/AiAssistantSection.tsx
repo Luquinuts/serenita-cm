@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import { ToggleSwitch } from "../components/ToggleSwitch";
 
 const API_URL =
   import.meta.env.VITE_API_URL ?? `${window.location.protocol}//${window.location.hostname}:8000`;
@@ -134,21 +135,17 @@ export function AiAssistantSection({ accessToken }: AiAssistantSectionProps) {
       {status ? <p className="status-line">{status}</p> : null}
 
       <form className="ai-query-form" onSubmit={askAi}>
-        <div className="segmented-control ai-provider-control" aria-label="Proveedor de IA">
-          <button
-            type="button"
-            className={provider === "openai" ? "active" : ""}
-            onClick={() => setProvider("openai")}
-          >
-            OpenAI
-          </button>
-          <button
-            type="button"
-            className={provider === "gemini" ? "active" : ""}
-            onClick={() => setProvider("gemini")}
-          >
-            Gemini
-          </button>
+        <div className="ai-provider-toggles">
+          <ToggleSwitch
+            checked={provider === "openai"}
+            onChange={() => setProvider("openai")}
+            label="OpenAI"
+          />
+          <ToggleSwitch
+            checked={provider === "gemini"}
+            onChange={() => setProvider("gemini")}
+            label="Gemini"
+          />
         </div>
 
         <label className="field">
