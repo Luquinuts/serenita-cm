@@ -192,8 +192,8 @@ describe("Redesign Base — CSS: Layout Shell", () => {
 describe("Redesign Base — CSS: Light Theme", () => {
   const css = readFileSync(cssFile, "utf-8");
 
-  it("4.1: light theme has industrial gray surfaces (dim: #e8e8e8)", () => {
-    expect(css).toMatch(/\[data-theme="light"\]\s*\{[^}]*--md-sys-color-surface-dim:\s*#e8e8e8/s);
+  it("4.1: light theme has industrial gray surfaces (dim: #e0e0e0)", () => {
+    expect(css).toMatch(/\[data-theme="light"\]\s*\{[^}]*--md-sys-color-surface-dim:\s*#e0e0e0/s);
   });
 
   it("4.1: light theme on-surface is #111111", () => {
