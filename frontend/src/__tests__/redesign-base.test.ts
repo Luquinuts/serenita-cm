@@ -165,7 +165,7 @@ describe("Redesign Base — CSS: Layout Shell", () => {
   });
 
   it("3.3: .panel has industrial subtle border and small radius", () => {
-    const match = css.match(/\.panel\s*\{([^}]*)\}/);
+    const match = css.match(/^\.panel\s*\{([^}]*)\}/m);
     expect(match).not.toBeNull();
     expect(match![1]).toMatch(/border-radius:\s*(0|2px)/);
     // Uses CSS variable or transparent white border

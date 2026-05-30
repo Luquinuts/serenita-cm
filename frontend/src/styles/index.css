@@ -95,9 +95,9 @@
   --skeleton-shimmer-to: rgba(255, 255, 255, 0.06);
   --dot-grid-color: rgba(255, 255, 255, 0.06);
   --dot-grid-opacity: 0.5;
-  --ambient-glow-1: rgba(0, 212, 255, 0.06);
-  --ambient-glow-2: rgba(0, 100, 200, 0.04);
-  --ambient-glow-3: rgba(255, 255, 255, 0.015);
+  --ambient-glow-1: rgba(0, 212, 255, 0.1);
+  --ambient-glow-2: rgba(0, 100, 200, 0.07);
+  --ambient-glow-3: rgba(255, 255, 255, 0.025);
 
   /* State layers */
   --md-sys-state-hover: rgba(230, 225, 229, 0.08);
@@ -151,9 +151,9 @@
   --skeleton-shimmer-to: rgba(0, 0, 0, 0.10);
   --dot-grid-color: rgba(0, 0, 0, 0.18);
   --dot-grid-opacity: 0.4;
-  --ambient-glow-1: rgba(0, 100, 200, 0.08);
-  --ambient-glow-2: rgba(0, 50, 100, 0.05);
-  --ambient-glow-3: rgba(255, 255, 255, 0.8);
+  --ambient-glow-1: rgba(0, 80, 200, 0.12);
+  --ambient-glow-2: rgba(0, 40, 120, 0.08);
+  --ambient-glow-3: rgba(255, 255, 255, 0.9);
 
   --app-background: var(--md-sys-color-surface-dim);
 }
@@ -201,6 +201,36 @@
   color: var(--md-sys-color-primary);
 }
 
+/* Liquid glass panels — lighter bg + visible blur in light mode */
+[data-theme="light"] .login-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(80px);
+  -webkit-backdrop-filter: blur(80px);
+}
+
+[data-theme="light"] .app-sidebar {
+  background: rgba(240, 240, 240, 0.5);
+  backdrop-filter: blur(100px) saturate(1.3);
+  -webkit-backdrop-filter: blur(100px) saturate(1.3);
+  border-right-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .sidebar-collapsed .app-sidebar {
+  background: rgba(240, 240, 240, 0.35);
+  backdrop-filter: blur(100px) saturate(1.3);
+  -webkit-backdrop-filter: blur(100px) saturate(1.3);
+}
+
+[data-theme="light"] .panel {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
+}
+
+[data-theme="light"] .content-item-modal {
+  background: rgba(245, 245, 245, 0.92);
+}
+
 * {
   box-sizing: border-box;
   min-width: 0;
@@ -228,9 +258,10 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, var(--ambient-glow-1) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, var(--ambient-glow-2) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 40% at 50% 50%, var(--ambient-glow-3) 0%, transparent 40%);
+    radial-gradient(ellipse 100% 80% at 20% 10%, var(--ambient-glow-1) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 70% at 80% 80%, var(--ambient-glow-2) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 60% at 50% 50%, var(--ambient-glow-3) 0%, transparent 40%);
+  filter: blur(120px);
 }
 
 /* Dot grid + noise overlay combined */
@@ -307,8 +338,8 @@ button {
   border-radius: 4px;
   padding: 36px;
   background: rgba(30, 30, 30, 0.5);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(60px);
+  -webkit-backdrop-filter: blur(60px);
   box-shadow: none;
 }
 
@@ -435,8 +466,8 @@ button {
   border: 0;
   border-right: 1px solid var(--border-glass);
   background: rgba(10, 12, 18, 0.25);
-  backdrop-filter: blur(40px) saturate(1.3);
-  -webkit-backdrop-filter: blur(40px) saturate(1.3);
+  backdrop-filter: blur(80px) saturate(1.3);
+  -webkit-backdrop-filter: blur(80px) saturate(1.3);
 }
 
 .sidebar-main {
@@ -885,7 +916,8 @@ button {
   border: 1px solid var(--border-glass);
   border-radius: 2px;
   background: rgba(30, 30, 30, 0.4);
-  backdrop-filter: none;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   box-shadow: none;
 }
 
